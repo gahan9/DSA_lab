@@ -1,6 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #define TEST_NUM 1000
+
+typedef struct list {
+    int val;
+    struct list* next;
+} list;
+
 int* generate_array(int max_element){
     // generate array of n elements
     static int array[100];
@@ -8,6 +14,36 @@ int* generate_array(int max_element){
         array[i] = rand();
     }
     return array;
+}
+
+int display_array(int *array, int no_of_elements){
+    for(int i=0; i<no_of_elements; i++){
+        printf( "*(array + %d) : %d\n", i, *(array + i));
+    }
+}
+
+list* generate_list(int max_element){
+    int i;
+    list * head = NULL;
+    head = malloc(sizeof(list));
+    head->val = rand();
+    head->next = malloc(sizeof(list));
+    for(int i=1; i < max_element; i++){
+        i = rand();
+        printf("elem: %d\n", i);
+        head->next->val = i;
+        head->next = malloc(sizeof(list));
+    }
+    head->next->next = NULL;
+    return head;
+}
+
+int display_list(list* lis){
+    list* current = lis;
+    while (current != NULL) {
+        printf("%d\n", current->val);
+        current = current->next;
+    }
 }
 
 void swap(int *one, int *two)
@@ -18,21 +54,15 @@ void swap(int *one, int *two)
     *two = temp;
 }
 
-int bubble(int* array){
-    int temp, i, j;
-    size_t arr_size = sizeof(array);
-    int flag=0;
-    for (j=0; j<arr_size; j++){
-        for (i=0; i<arr_size; i++){
-            temp = array[i];
-            if (temp > array[i+1]){
-                flag = 1;
-                array[i] = array[i+1];
-                array[i+1] = temp;
+int bubble(int* array, int no_of_elements){
+    // no_of_elements : parameter require to specify otherwise static size of array found with 
+    int i, j;
+    // size_t arr_size = sizeof(array);
+    for (j=0; j < no_of_elements-1; j++){
+        for (i=0; i < no_of_elements-j-1; i++){
+            if (array[i] > array[i+1]){
+                swap(&array[i], &array[i+1]);
             }
-        }
-        if (flag == 0){
-            break;
         }
     }
 }
@@ -57,12 +87,14 @@ int main(){
     }
     fclose (fp);
     */
-    arr_ptr = generate_array(TEST_NUM);  // store generated array of random TEST_NUM numbers
     
-    // // loop for debug to check which elements are generated randomly
-    // for(i=0; i<TEST_NUM; i++){
-    //     printf( "*(arr_ptr + %d) : %d\n", i, *(arr_ptr + i));
-    // }
+
+    arr_ptr = generate_array(TEST_NUM);  // store generated array of random TEST_NUM numbers
+    // loop for debug to check which elements are generated randomly
+    // display_array(arr_ptr, TEST_NUM);
+    list* lis = generate_list(TEST_NUM);
+    display_list(lis);
+    
     // res = bubble(&arr);
     return 0;
 }
