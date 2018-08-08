@@ -98,11 +98,41 @@ char* readline() {
 
 void read_file_input()
 {
-    int ptr[TEST_NUM], count = 0, i;
+    int ptr[TEST_NUM], count = 0, i, ar_count;
     char c[100];
     FILE *fp = fopen("file.in", "r");
-    char* in = readline();
-        printf("%s\n", in);
+
+    char in = fgetc(fp);
+    ar_count = (int) (in - '0');
+    printf("arr cnt : %d", ar_count);
+    char* ar_count_str = readline();
+    // fgets(c, 1024, fp);
+    int cnt = 0;
+    while (1) {
+        printf("cnt: %d", cnt);
+        cnt++;
+        if (cnt >20)
+            break;
+        if (fgets(c,150, fp) == NULL) break;
+        i++;
+        printf("%3d: %s", i, c);
+    }
+    printf("%d\n",i);
+    // while((in = fgetc(fp)) != EOF)
+    //     printf("in: %c", in);
+    
+    char** ar_temp = split_string(&in);
+    printf("---> %s", &ar_temp[0]);
+    for (int ar_itr = 0; ar_itr < 15; ar_itr++) {
+        char* ar_item_endptr;
+        char* ar_item_str = ar_temp[ar_itr];
+        int ar_item = strtol(ar_item_str, &ar_item_endptr, 10);
+        printf("-->%d. %d", ar_itr, ar_item);
+        if (ar_item_endptr == ar_item_str || *ar_item_endptr != '\0') { exit(EXIT_FAILURE); }
+
+        c[ar_itr] = ar_item;
+    }
+
     // while (in != EOF){
     //     // ptr[count] = in;
     //     // fgetc(fp);
