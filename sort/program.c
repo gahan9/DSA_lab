@@ -155,10 +155,10 @@ void read_file_input() {
     fclose (fp);
 }
 
-int* bubble(int array[], int no_of_elements){
+int* bubble(int* array, int no_of_elements){
     // Bubble sort algorithm
     // no_of_elements : parameter require to specify otherwise static size of array found with
-    printf("\n--------------------Bubble sort--------------------\n");
+//    printf("\n--------------------Bubble sort--------------------\n");
 //    printf("\number of elements\t\tAlgorithm\t\n%d\t\t Bubble Sort", no_of_elements);
     int i, j;
     bool flag;
@@ -177,24 +177,20 @@ int* bubble(int array[], int no_of_elements){
     return array;
 }
 
-void insertionSort(int arr[], int n)
-{
-    int i, key, j;
-    for (i = 1; i < n; i++)
-    {
-        key = arr[i];
+int* insertion(int* array, int no_of_elements){
+    // Insertion sort algorithm
+//    printf("\n--------------------Insertion sort--------------------\n");
+    int i, j, key;
+    for (i = 1; i < no_of_elements; i++){
+        key = array[i];
         j = i-1;
-
-        /* Move elements of arr[0..i-1], that are
-           greater than key, to one position ahead
-           of their current position */
-        while (j >= 0 && arr[j] > key)
-        {
-            arr[j+1] = arr[j];
+        while (j >= 0 && array[j] > key){
+            array[j+1] = array[j];
             j = j-1;
         }
-        arr[j+1] = key;
+        array[j+1] = key;
     }
+    return array;
 }
 
 int main(){
@@ -202,7 +198,7 @@ int main(){
     clock_t t;
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
-    arr_ptr = generate_array(TEST_NUM);  // store generated array of random TEST_NUM numbers
+//    arr_ptr = generate_array(TEST_NUM);  // store generated array of random TEST_NUM numbers
 //    read_file_input();
 ////    loop for debug to check which elements are generated randomly
 //    printf("\n original array elements:");
@@ -212,11 +208,16 @@ int main(){
     bubble(generate_array(TEST_NUM), TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
-
+    printf("\nInsertion sort took %f amount of time", cpu_time_consumption);
+    t = clock();
+    insertion(generate_array(TEST_NUM), TEST_NUM);
+    t = clock() - t;
+    cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
+//    printf("\nBubble sort took %f amount of time\n", cpu_time_consumption);
 //    printf("\noriginal array elements after bubble sort: ");
 //    display_array(generate_array(TEST_NUM), TEST_NUM);
 
-    printf("\nBubble sort took %f amount of time\n", cpu_time_consumption);
+    printf("\nBubble sort took %f amount of time", cpu_time_consumption);
     // display_array(res, TEST_NUM);
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;
