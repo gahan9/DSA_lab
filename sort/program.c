@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define TEST_NUM 10
+#define TEST_NUM 1000
 
 typedef struct list {
     int val;
@@ -13,7 +13,7 @@ typedef struct list {
 
 int* generate_array(int max_element){
     // generate array of n elements
-    static int array[100];
+    static int array[TEST_NUM];
     for(int i=0; i < max_element; i++){
         array[i] = rand();
     }
@@ -21,12 +21,15 @@ int* generate_array(int max_element){
 }
 
 int display_array(int *array, int no_of_elements){
+    // display given array of given size(no. of elements require because sizeof() returns max bound value)
     for(int i=0; i<no_of_elements; i++){
         printf( "*(array + %d) : %d\n", i, *(array + i));
     }
 }
 
 list* generate_list(int max_element){
+    // function for generating linked list
+    // under process**
     int i;
     list * head = NULL;
     head = malloc(sizeof(list));
@@ -58,6 +61,7 @@ void swap(int *one, int *two){
 }
 
 char** split_string(char* str) {
+    // split string by separator space
     char** splits = NULL;
     char* token = strtok(str, " ");
     int spaces = 0;
@@ -74,6 +78,7 @@ char** split_string(char* str) {
 }
 
 char* readline() {
+    // read file line -- copied from hackerrank challange template solution
     size_t alloc_length = 1024;
     size_t data_length = 0;
     char* data = malloc(alloc_length);
@@ -96,8 +101,8 @@ char* readline() {
     return data;
 }
 
-void read_file_input()
-{
+void read_file_input() {
+    // under development function to read inputs from file
     int ptr[TEST_NUM], count = 0, i, ar_count;
     char c[100];
     FILE *fp = fopen("file.in", "r");
@@ -122,7 +127,7 @@ void read_file_input()
     //     printf("in: %c", in);
     
     char** ar_temp = split_string(&in);
-    printf("---> %s", &ar_temp[0]);
+    printf("---> %s", ar_temp[0]);
     for (int ar_itr = 0; ar_itr < 15; ar_itr++) {
         char* ar_item_endptr;
         char* ar_item_str = ar_temp[ar_itr];
@@ -149,10 +154,12 @@ void read_file_input()
     }
     fclose (fp);
 }
-int* bubble(int* array, int no_of_elements){
+
+int* bubble(int array[], int no_of_elements){
+    // Bubble sort algorithm
     // no_of_elements : parameter require to specify otherwise static size of array found with
     printf("\n--------------------Bubble sort--------------------\n");
-    printf("\nnumber of elements\t\tAlgorithm\t\n%d\t\t\t\t\t\t Bubble Sort", no_of_elements);
+//    printf("\number of elements\t\tAlgorithm\t\n%d\t\t Bubble Sort", no_of_elements);
     int i, j;
     bool flag;
     // size_t arr_size = sizeof(array);
@@ -164,27 +171,53 @@ int* bubble(int* array, int no_of_elements){
                 flag = true;
             }
         }
-        if (flag==false)
+        if (!flag)
             break;
     }
     return array;
 }
 
+void insertionSort(int arr[], int n)
+{
+    int i, key, j;
+    for (i = 1; i < n; i++)
+    {
+        key = arr[i];
+        j = i-1;
+
+        /* Move elements of arr[0..i-1], that are
+           greater than key, to one position ahead
+           of their current position */
+        while (j >= 0 && arr[j] > key)
+        {
+            arr[j+1] = arr[j];
+            j = j-1;
+        }
+        arr[j+1] = key;
+    }
+}
+
 int main(){
-    int i, num = 100000;
-    int *arr_ptr, *res;
+    int i, *res, *arr_ptr;
     clock_t t;
     double cpu_time_consumption;
-    printf("Initializing...\n");
-    read_file_input();
+    printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
     arr_ptr = generate_array(TEST_NUM);  // store generated array of random TEST_NUM numbers
-    // // loop for debug to check which elements are generated randomly
-    // display_array(arr_ptr, TEST_NUM);
+//    read_file_input();
+////    loop for debug to check which elements are generated randomly
+//    printf("\n original array elements:");
+//    display_array(arr_ptr, TEST_NUM);
+
     t = clock();
-    // res = bubble(arr_ptr, TEST_NUM);
-    // t = clock() - t;
-    // cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
-    // printf("\nBubble sort took %f amount of time\n", cpu_time_consumption);
+    bubble(generate_array(TEST_NUM), TEST_NUM);
+    t = clock() - t;
+    cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
+
+//    printf("\noriginal array elements after bubble sort: ");
+//    display_array(generate_array(TEST_NUM), TEST_NUM);
+
+    printf("\nBubble sort took %f amount of time\n", cpu_time_consumption);
     // display_array(res, TEST_NUM);
+    printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;
 }
