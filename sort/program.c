@@ -6,11 +6,6 @@
 
 #define TEST_NUM 1000
 
-typedef struct list {
-    int val;
-    struct list* next;
-} list;
-
 int* generate_array(int max_element){
     // generate array of n elements
     static int array[TEST_NUM];
@@ -24,32 +19,6 @@ int display_array(int *array, int no_of_elements){
     // display given array of given size(no. of elements require because sizeof() returns max bound value)
     for(int i=0; i<no_of_elements; i++){
         printf( "*(array + %d) : %d\n", i, *(array + i));
-    }
-}
-
-list* generate_list(int max_element){
-    // function for generating linked list
-    // under process**
-    int i;
-    list * head = NULL;
-    head = malloc(sizeof(list));
-    head->val = rand();
-    head->next = malloc(sizeof(list));
-    for(int i=1; i < max_element; i++){
-        i = rand();
-        printf("elem: %d\n", i);
-        head->next->val = i;
-        head->next = malloc(sizeof(list));
-    }
-    head->next->next = NULL;
-    return head;
-}
-
-int display_list(list* lis){
-    list* current = lis;
-    while (current != NULL) {
-        printf("%d\n", current->val);
-        current = current->next;
     }
 }
 
@@ -193,6 +162,21 @@ int* insertion(int* array, int no_of_elements){
     return array;
 }
 
+int* selection(int* array, int no_of_elements){
+    // Insertion sort algorithm
+//    printf("\n--------------------Insertion sort--------------------\n");
+    for (int i = 0; i < no_of_elements-1; i++){  // iterate up to second last element
+        int min = i;  // set current index as minimum
+        for (int j = i+1; j < no_of_elements; j++){  // iterate over all elements of certain range
+            if(*(array + j) < *(array + min))
+                min = j;  // set new minimum index scanned/iterated so far
+        }
+        if (min != i)
+            swap(&array[i], &array[min]);  // swap minimum element scanned/iterated so far
+    }
+    return array;
+}
+
 int main(){
     int i, *res, *arr_ptr;
     clock_t t;
@@ -204,20 +188,28 @@ int main(){
 //    printf("\n original array elements:");
 //    display_array(arr_ptr, TEST_NUM);
 
+    // bubble sort
     t = clock();
-    bubble(generate_array(TEST_NUM), TEST_NUM);
+    arr_ptr = generate_array(TEST_NUM);
+    bubble(arr_ptr, TEST_NUM);
+    t = clock() - t;
+    cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
+    printf("\nBubble sort took %f amount of time", cpu_time_consumption);
+    // insertion sort
+    t = clock();
+    arr_ptr = generate_array(TEST_NUM);
+    insertion(arr_ptr, TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf("\nInsertion sort took %f amount of time", cpu_time_consumption);
+    // selection sort
     t = clock();
-    insertion(generate_array(TEST_NUM), TEST_NUM);
+    arr_ptr = generate_array(TEST_NUM);
+    selection(arr_ptr, TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
-//    printf("\nBubble sort took %f amount of time\n", cpu_time_consumption);
-//    printf("\noriginal array elements after bubble sort: ");
-//    display_array(generate_array(TEST_NUM), TEST_NUM);
+    printf("\nSelection sort took %f amount of time", cpu_time_consumption);
 
-    printf("\nBubble sort took %f amount of time", cpu_time_consumption);
     // display_array(res, TEST_NUM);
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;
