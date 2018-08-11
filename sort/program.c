@@ -9,7 +9,7 @@
 int* generate_array(int max_element){
     // generate array of n elements
     static int array[TEST_NUM];
-    for(int i=0; i < max_element; i++){
+    for(register int i=0; i < max_element; i++){
         array[i] = rand();
     }
     return array;
@@ -17,7 +17,7 @@ int* generate_array(int max_element){
 
 int display_array(int *array, int no_of_elements){
     // display given array of given size(no. of elements require because sizeof() returns max bound value)
-    for(int i=0; i<no_of_elements; i++){
+    for(register int i=0; i<no_of_elements; i++){
         printf( "*(array + %d) : %d\n", i, *(array + i));
     }
 }
@@ -94,7 +94,7 @@ void read_file_input() {
     printf("%d\n",i);
     // while((in = fgetc(fp)) != EOF)
     //     printf("in: %c", in);
-    
+
     char** ar_temp = split_string(&in);
     printf("---> %s", ar_temp[0]);
     for (int ar_itr = 0; ar_itr < 15; ar_itr++) {
@@ -129,7 +129,7 @@ int* bubble(int* array, int no_of_elements){
     // no_of_elements : parameter require to specify otherwise static size of array found with
 //    printf("\n--------------------Bubble sort--------------------\n");
 //    printf("\number of elements\t\tAlgorithm\t\n%d\t\t Bubble Sort", no_of_elements);
-    int i, j;
+    register int i, j;
     bool flag;
     // size_t arr_size = sizeof(array);
     for (j=0; j < no_of_elements-1; j++){
@@ -149,7 +149,7 @@ int* bubble(int* array, int no_of_elements){
 int* insertion(int* array, int no_of_elements){
     // Insertion sort algorithm
 //    printf("\n--------------------Insertion sort--------------------\n");
-    int i, j, key;
+    register int i, j, key;
     for (i = 1; i < no_of_elements; i++){
         key = array[i];
         j = i-1;
@@ -165,9 +165,9 @@ int* insertion(int* array, int no_of_elements){
 int* selection(int* array, int no_of_elements){
     // Insertion sort algorithm
 //    printf("\n--------------------Insertion sort--------------------\n");
-    for (int i = 0; i < no_of_elements-1; i++){  // iterate up to second last element
+    for (register int i = 0; i < no_of_elements-1; i++){  // iterate up to second last element
         int min = i;  // set current index as minimum
-        for (int j = i+1; j < no_of_elements; j++){  // iterate over all elements of certain range
+        for (register int j = i+1; j < no_of_elements; j++){  // iterate over all elements of certain range
             if(*(array + j) < *(array + min))
                 min = j;  // set new minimum index scanned/iterated so far
         }
