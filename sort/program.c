@@ -1,10 +1,11 @@
 /*
  sorting algorithm analysis
  algorithms:
- graph: sorted
+ graph: (total number v/s total time)
+        sorted
         reverse sorted
         unsorted
-    logarithmic scale
+    logarithmic scale (for variation in density)
  */
 #include<stdio.h>
 #include<stdbool.h>
