@@ -64,7 +64,6 @@ void read_file_input() {
     char in = fgetc(fp);
     // ar_count = (int) (in - '0');
     printf("\narr\n");
-    // fgets(c, 1024, fp);
      while (in != EOF){
         if ((int) (in -'0') == -16){
             printf("\nspace\n");
@@ -72,19 +71,9 @@ void read_file_input() {
         else{
             printf("%c - %d\n",in,  (int) (in - '0'));
         }
-         // ptr[count] = in;
-         // fgetc(fp);
          in = fgetc(fp);
-         count += 1;
      }
-    // fscanf(fp,"%[^\n]", c);
-    // printf("Data from the file:\n%s", c);
-    // fscanf(fp,"%[^\n]", c);
-    // printf("Data from the file:\n%s", c);
     printf("\n\n");
-    for (i=0; i<=count; i++){
-        // printf("%d\n", *(ptr +i));
-    }
     fclose (fp);
 }
 
@@ -141,21 +130,21 @@ int* selection(int* array, int no_of_elements){
     return array;
 }
 
-int partition (int* array, int start, int end) {
-    int pivot = array[end];    // select pivot
-    int i = (start - 1);  // get index of smaller element
-
-    for (int j=start; j <= end- 1; j++) {
-        if (array[j] <= pivot) {
-            i++;    // increment index of smaller element
-            swap(&array[i], &array[j]);
-        }
-    }
-    swap(&array[i + 1], &array[end]);
-    return (i + 1);
-}
-
 int* quick(int *array, int start, int end) {
+    int partition (int* array, int start, int end) {
+        int pivot = array[end];    // select pivot
+        int i = (start - 1);  // get index of smaller element
+
+        for (int j=start; j <= end- 1; j++) {
+            if (array[j] <= pivot) {
+                i++;    // increment index of smaller element
+                swap(&array[i], &array[j]);
+            }
+        }
+        swap(&array[i + 1], &array[end]);
+        return (i + 1);
+    }
+
     if (start < end) {
         int partition_index = partition(array, start, end);
         quick(array, start, partition_index - 1);
@@ -163,35 +152,36 @@ int* quick(int *array, int start, int end) {
     }
 }
 
-int conquer(int *array, int low, int mid, int high){
-    int *array1, *array2;
-    int num1, num2, i, j, k;
-    num1 = mid - low + 1;
-    num2 = high - mid;
-    for(i=0; i < num1; i++){
-        *(array1 + i) = *(array + low + i);
-    }
-    for(j=0; j < num2; j++){
-        *(array2 + j) = *(array + mid + j + 1);
-    }
-
-    i=0, j=0;
-    for(int k=0; k<=high; k++){
-        if (*(array1 + i) <= *(array2 + j)){
-            *(array + k) = *(array1 + i);
-            i++;
-        }
-        else{
-            *(array + k) = *(array2 + j);
-            j++;
-        }
-    }
-    return 0;
-}
-
 int* merge(int* array, int low, int high){
     // low: left start node
     // high: right end node |i.e. (number of elements - 1)
+
+    int conquer(int *array, int low, int mid, int high){
+        int *array1, *array2;
+        int num1, num2, i, j, k;
+        num1 = mid - low + 1;
+        num2 = high - mid;
+        for(i=0; i < num1; i++){
+            *(array1 + i) = *(array + low + i);
+        }
+        for(j=0; j < num2; j++){
+            *(array2 + j) = *(array + mid + j + 1);
+        }
+
+        i=0, j=0;
+        for(int k=0; k<high; k++){
+            if (*(array1 + i) <= *(array2 + j)){
+                *(array + k) = *(array1 + i);
+                i++;
+            }
+            else{
+                *(array + k) = *(array2 + j);
+                j++;
+            }
+        }
+        return 0;
+    }
+
     int mid;
     if (low < high){
         mid = (low + high) / 2;
