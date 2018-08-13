@@ -98,7 +98,7 @@ void read_file_input() {
     fclose (fp);
 }
 
-int* bubble(int* array, int start, int no_of_elements){
+int* bubble_iterative(int* array, int start, int no_of_elements){
     // Bubble sort algorithm
     // no_of_elements : parameter require to specify otherwise static size of array found with
 //    printf("\n--------------------Bubble sort--------------------\n");
@@ -120,7 +120,7 @@ int* bubble(int* array, int start, int no_of_elements){
     return array;
 }
 
-int* insertion(int* array, int start, int no_of_elements){
+int* insertion_iterative(int* array, int start, int no_of_elements){
     // Insertion sort algorithm
 //    printf("\n--------------------Insertion sort--------------------\n");
     register int i, j, key;
@@ -136,7 +136,7 @@ int* insertion(int* array, int start, int no_of_elements){
     return array;
 }
 
-int* selection(int* array, int start, int no_of_elements){
+int* selection_iterative(int* array, int start, int no_of_elements){
     // Insertion sort algorithm
 //    printf("\n--------------------Selection sort--------------------\n");
     for (register int i = 0; i < no_of_elements-1; i++){  // iterate up to second last element
@@ -151,7 +151,7 @@ int* selection(int* array, int start, int no_of_elements){
     return array;
 }
 
-int* quick(int *array, int start, int no_of_elements) {
+int* quick_recursive(int *array, int start, int no_of_elements) {
     no_of_elements = no_of_elements-1;
     int partition (int* array, int start, int no_of_elements) {
         int pivot = array[no_of_elements];    // select pivot
@@ -175,7 +175,7 @@ int* quick(int *array, int start, int no_of_elements) {
     return array;
 }
 
-int* merge(int* array, int low, int high){
+int* merge_recursive(int* array, int low, int high){
     // low: left start node
     // high: right end node |i.e. (number of elements - 1)
 
@@ -222,11 +222,11 @@ int main(){
     clock_t t;
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
-    analysis(bubble, "Bubble sort");
-    analysis(insertion, "Insertion sort");
-    analysis(selection, "Selection sort");
-    analysis(quick, "Quick sort");
-    analysis(merge, "Merge sort");
+    analysis(bubble_iterative, "Bubble sort (Iterative)");
+    analysis(insertion_iterative, "Insertion sort (Iterative)");
+    analysis(selection_iterative, "Selection sort (Iterative)");
+    analysis(quick_recursive, "Quick sort (Recursive)");
+    analysis(merge_recursive, "Merge sort (Recursive)");
     // read_file_input();
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;
