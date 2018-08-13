@@ -13,7 +13,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define TEST_NUM 100000
+#define TEST_NUM 1000000
 
 int* generate_array(int max_element, bool sort_flag){
     // generate array of n elements
@@ -231,12 +231,19 @@ int main(){
     clock_t t;
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
-    analysis(bubble_iterative, "Bubble sort (Iterative)");
+//    analysis(bubble_iterative, "Bubble sort (Iterative)");
     analysis(insertion_iterative, "Insertion sort (Iterative)");
-    analysis(selection_iterative, "Selection sort (Iterative)");
-    analysis(quick_recursive, "Quick sort (Recursive)");
-    analysis(merge_recursive, "Merge sort (Recursive)");
+//    analysis(selection_iterative, "Selection sort (Iterative)");
+//    analysis(quick_recursive, "Quick sort (Recursive)");
+//    analysis(merge_recursive, "Merge sort (Recursive)");
     // read_file_input();
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;
 }
+
+/*
+Initializing Sorting Algorithm for 10,00,000 numbers...
+
+Analysis of Insertion sort (Iterative)
+- for unsorted 1000000 elements: 374.238000
+*/
