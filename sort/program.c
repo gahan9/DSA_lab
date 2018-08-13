@@ -1,3 +1,11 @@
+/*
+ sorting algorithm analysis
+ algorithms:
+ graph: sorted
+        reverse sorted
+        unsorted
+    logarithmic scale
+ */
 #include<stdio.h>
 #include<stdbool.h>
 #include<string.h>
