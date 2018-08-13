@@ -13,7 +13,7 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define TEST_NUM 10000
+#define TEST_NUM 100000
 
 int* generate_array(int max_element, bool sort_flag){
     // generate array of n elements
@@ -178,8 +178,8 @@ int* quick_recursive(int *array, int start, int no_of_elements) {
 
     if (start < no_of_elements) {
         int partition_index = partition(array, start, no_of_elements);
-        quick(array, start, partition_index - 1);
-        quick(array, partition_index + 1, no_of_elements);
+        quick_recursive(array, start, partition_index - 1);
+        quick_recursive(array, partition_index + 1, no_of_elements);
     }
     return array;
 }
@@ -217,8 +217,8 @@ int* merge_recursive(int* array, int low, int high){
     int mid;
     if (low < high){
         mid = (low + high) / 2;
-        merge(array, low, mid);
-        merge(array, mid+1, high);
+        merge_recursive(array, low, mid);
+        merge_recursive(array, mid+1, high);
 
         conquer(array, low, mid, high);
     }
