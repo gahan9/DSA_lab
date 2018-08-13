@@ -4,13 +4,22 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define TEST_NUM 10000
+#define TEST_NUM 1000
 
 int* generate_array(int max_element){
     // generate array of n elements
     static int array[TEST_NUM];
     for(register int i=0; i < max_element; i++){
         array[i] = rand();
+    }
+    return array;
+}
+
+int* generate_sorted_array(int max_element){
+    // generate array of n elements
+    static int array[TEST_NUM];
+    for(register int i=1; i <= max_element; i++){
+        array[i] = i;
     }
     return array;
 }
@@ -132,15 +141,12 @@ int* selection(int* array, int no_of_elements){
     return array;
 }
 
-int partition (int* array, int start, int end)
-{
+int partition (int* array, int start, int end) {
     int pivot = array[end];    // select pivot
     int i = (start - 1);  // get index of smaller element
 
-    for (int j=start; j <= end- 1; j++)
-    {
-        if (array[j] <= pivot)
-        {
+    for (int j=start; j <= end- 1; j++) {
+        if (array[j] <= pivot) {
             i++;    // increment index of smaller element
             swap(&array[i], &array[j]);
         }
@@ -149,58 +155,101 @@ int partition (int* array, int start, int end)
     return (i + 1);
 }
 
-int* quick(int *array, int start, int end)
-{
-    if (start < end)
-    {
+int* quick(int *array, int start, int end) {
+    if (start < end) {
         int partition_index = partition(array, start, end);
-
-        // Separately sort elements before
-        // partition and after partition
         quick(array, start, partition_index - 1);
         quick(array, partition_index + 1, end);
     }
 }
+
+int conquer(int *array, int low, int mid, int high){
+    int *array1, *array2;
+    int num1, num2, i, j, k;
+    num1 = mid - low + 1;
+    num2 = high - mid;
+    for(int i=0; i < num1; i++){
+        *(array1 + i) = *(array + low + i);
+    }
+    for(int i=0; i < num1; i++){
+        *(array2 + i) = *(array + mid + i + 1);
+    }
+
+    i=0, j=0;
+    for(int k=0; k<=high; k++){
+        if (*(array1 + i) <= *(array2 + j)){
+            *(array + k) = *(array1 + i);
+            i++;
+        }
+        else{
+            *(array + k) = *(array2 + j);
+            i++;
+        }
+    }
+    return 0;
+}
+
+int* merge(int* array, int low, int high){
+    int mid;
+    if (low < high){
+        mid = (low + high) / 2;
+        merge(array, low, mid);
+        merge(array, mid+1, high);
+
+        conquer(array, low, mid, high);
+    }
+    return array;
+}
+
 
 int main(){
     int i, *res, *arr_ptr;
     clock_t t;
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
-//    arr_ptr = generate_array(TEST_NUM);  // store generated array of random TEST_NUM numbers
-//    read_file_input();
-////    loop for debug to check which elements are generated randomly
+//    loop for debug to check which elements are generated randomly
 //    printf("\n original array elements:");
 //    display_array(arr_ptr, TEST_NUM);
 
     // bubble sort
-    t = clock();
     arr_ptr = generate_array(TEST_NUM);
+    t = clock();
     bubble(arr_ptr, TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf("\nBubble sort took %f amount of time", cpu_time_consumption);
+
     // insertion sort
-    t = clock();
     arr_ptr = generate_array(TEST_NUM);
+    t = clock();
     insertion(arr_ptr, TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf("\nInsertion sort took %f amount of time", cpu_time_consumption);
+
     // selection sort
-    t = clock();
     arr_ptr = generate_array(TEST_NUM);
+    t = clock();
     selection(arr_ptr, TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf("\nSelection sort took %f amount of time", cpu_time_consumption);
+
     // quick sort
-    t = clock();
     arr_ptr = generate_array(TEST_NUM);
+    t = clock();
     quick(arr_ptr, 0, TEST_NUM-1);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf("\nQuick sort took %f amount of time", cpu_time_consumption);
+
+    // Merge sort
+    arr_ptr = generate_array(TEST_NUM);
+    t = clock();
+    merge(arr_ptr, 0, TEST_NUM-1);
+    t = clock() - t;
+    cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
+    printf("\nMerge sort took %f amount of time", cpu_time_consumption);
 
     // read_file_input();
     // display_array(res, TEST_NUM);
