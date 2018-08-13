@@ -168,11 +168,11 @@ int conquer(int *array, int low, int mid, int high){
     int num1, num2, i, j, k;
     num1 = mid - low + 1;
     num2 = high - mid;
-    for(int i=0; i < num1; i++){
+    for(i=0; i < num1; i++){
         *(array1 + i) = *(array + low + i);
     }
-    for(int i=0; i < num1; i++){
-        *(array2 + i) = *(array + mid + i + 1);
+    for(j=0; j < num2; j++){
+        *(array2 + j) = *(array + mid + j + 1);
     }
 
     i=0, j=0;
@@ -183,13 +183,15 @@ int conquer(int *array, int low, int mid, int high){
         }
         else{
             *(array + k) = *(array2 + j);
-            i++;
+            j++;
         }
     }
     return 0;
 }
 
 int* merge(int* array, int low, int high){
+    // low: left start node
+    // high: right end node |i.e. (number of elements - 1)
     int mid;
     if (low < high){
         mid = (low + high) / 2;
