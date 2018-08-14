@@ -13,52 +13,58 @@
 #include<stdlib.h>
 #include<time.h>
 
-#define TEST_NUM 1000000
+#define TEST_NUM 10
 
 int* generate_array(int max_element, bool sort_flag){
     // generate array of n elements
     static int array[TEST_NUM];
     if (!sort_flag) {  // generate random unsorted numbers if flag is false
-        for (register int i = 0; i < max_element; i++) {
+        for (int i = 0; i < max_element; i++) {
             array[i] = rand();
         }
     }
     else{
-        for(register int i=1; i <= max_element; i++){  // generate sorted numbers if flag is true
+        for(int i=1; i <= max_element; i++){  // generate sorted numbers if flag is true
             array[i] = i;
         }
     }
     return array;
 }
 
+int display_array(int *array, int no_of_elements){
+    // display given array of given size(no. of elements require because sizeof() returns max bound value)
+    printf("\n");
+    for(register int i=0; i<no_of_elements; i++){
+        printf( "%d ", i, *(array + i));
+    }
+    return 0;
+}
+
 void analysis(int* (*f)(int *, int,  int), char algo_name[]){
-    int *arr_ptr;
     clock_t t;
     double cpu_time_consumption;
     printf("\nAnalysis of %s", algo_name);
     printf("\n- for unsorted %d elements: ", TEST_NUM);
+    int *arr_ptr, *res;
     arr_ptr = generate_array(TEST_NUM, false);
+    display_array(arr_ptr, TEST_NUM);
     t = clock();
-    (*f)(arr_ptr, 0, TEST_NUM);
+    res = (*f)(arr_ptr, 0, TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
-    printf("%f", cpu_time_consumption);
+    printf(":: %f", cpu_time_consumption);
+    display_array(res, TEST_NUM);
 
     printf("\n- for sorted %d elements: ", TEST_NUM);
     arr_ptr = generate_array(TEST_NUM, true);
+    display_array(arr_ptr, TEST_NUM);
     t = clock();
-    (*f)(arr_ptr, 0, TEST_NUM);
+    res = (*f)(arr_ptr, 0, TEST_NUM);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
-    printf("%f\n", cpu_time_consumption);
+    printf(":: %f\n", cpu_time_consumption);
+    display_array(res, TEST_NUM);
 
-}
-
-int display_array(int *array, int no_of_elements){
-    // display given array of given size(no. of elements require because sizeof() returns max bound value)
-    for(register int i=0; i<no_of_elements; i++){
-        printf( "*(array + %d) : %d\n", i, *(array + i));
-    }
 }
 
 void swap(int *one, int *two){
@@ -175,7 +181,7 @@ int* quick_recursive(int *array, int start, int no_of_elements) {
         swap(&array[i + 1], &array[no_of_elements]);
         return (i + 1);
     }
-
+    // PROCESSING
     if (start < no_of_elements) {
         int partition_index = partition(array, start, no_of_elements);
         quick_recursive(array, start, partition_index - 1);
@@ -213,7 +219,7 @@ int* merge_recursive(int* array, int low, int high){
         }
         return 0;
     }
-
+    // PROCESSING
     int mid;
     if (low < high){
         mid = (low + high) / 2;
@@ -225,6 +231,36 @@ int* merge_recursive(int* array, int low, int high){
     return array;
 }
 
+int* heap_recursive(int* array, int start, int no_of_elements){
+    int* heapify(int* array, int heap_size, int idx){
+        // heapify array == rearrange array to follow heap structure/rule
+        // heap_size: no_of_elements
+        int root = idx;  // consider given node as current possible root node
+        int left = 2*idx + 1;
+        int right = 2*idx + 2;
+
+        if (left < heap_size && *(array + left) > *(array + root)){  // right child > eligible root/largest
+            root = left;
+        }
+        if (right < heap_size && *(array + right) > *(array + root)){  // right child > eligible root/largest
+            root = right;
+        }
+        if (root != idx){  // root node is not largest
+            swap(&array[idx], &array[root]);
+            heapify(array, heap_size, idx);
+        }
+    }
+    // PROCESSING
+    for (int i=(no_of_elements/2)-1; i >= 0; i--){
+        heapify(array, no_of_elements, i);
+    }
+    for (int i=no_of_elements-1; i >=0; i--){
+        // move current root to end
+        swap(&array[0], &array[i]);
+        heapify(array, i, 0);  // max heapify
+    }
+    return array;
+}
 
 int main(){
     int i, *res, *arr_ptr;
