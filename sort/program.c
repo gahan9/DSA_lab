@@ -15,17 +15,27 @@
 
 #define TEST_NUM 10
 
-int* generate_array(int max_element, bool sort_flag){
+int* generate_array(int max_element, int sort_flag){
     // generate array of n elements
     static int array[TEST_NUM];
-    if (!sort_flag) {  // generate random unsorted numbers if flag is false
+    if (sort_flag == 0) {  // generate random unsorted numbers if flag is 0
         for (int i = 0; i < max_element; i++) {
-            array[i] = rand();
+            array[i] = rand()%100;
+        }
+    }
+    else if (sort_flag == 1){
+        for(int i=0; i < max_element; i++){  // generate sorted "ascending" numbers if flag is true
+            array[i] = i;
+        }
+    }
+    else if (sort_flag == 2){
+        for(int i=max_element; i > 0; i--){  // generate sorted "descending" numbers if flag is true
+            array[max_element-i] = i;
         }
     }
     else{
-        for(int i=1; i <= max_element; i++){  // generate sorted numbers if flag is true
-            array[i] = i;
+        for(int i=0; i < max_element; i++){  // all elements same
+            array[i] = sort_flag;
         }
     }
     return array;
@@ -33,37 +43,64 @@ int* generate_array(int max_element, bool sort_flag){
 
 int display_array(int *array, int no_of_elements){
     // display given array of given size(no. of elements require because sizeof() returns max bound value)
-    printf("\n");
-    for(register int i=0; i<no_of_elements; i++){
-        printf( "%d ", i, *(array + i));
+    printf(": ");
+    for(int i=0; i<no_of_elements; i++){
+        printf( "%d ", *(array + i));
     }
     return 0;
 }
 
 void analysis(int* (*f)(int *, int,  int), char algo_name[]){
+    int *arr_ptr;
     clock_t t;
     double cpu_time_consumption;
+    int number;
+    if (algo_name == "Merge sort (Recursive)")
+        number = TEST_NUM - 1;
     printf("\nAnalysis of %s", algo_name);
+    // unsorted elements
+    arr_ptr = generate_array(number, 0);
+    display_array(arr_ptr, number);
     printf("\n- for unsorted %d elements: ", TEST_NUM);
-    int *arr_ptr, *res;
-    arr_ptr = generate_array(TEST_NUM, false);
-    display_array(arr_ptr, TEST_NUM);
     t = clock();
-    res = (*f)(arr_ptr, 0, TEST_NUM);
+    (*f)(arr_ptr, 0, number);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f", cpu_time_consumption);
-    display_array(res, TEST_NUM);
+    display_array(arr_ptr, number);
 
-    printf("\n- for sorted %d elements: ", TEST_NUM);
-    arr_ptr = generate_array(TEST_NUM, true);
+    // ascending sorted
+    printf("\n- for sorted (Ascending) %d elements: ", TEST_NUM);
+    arr_ptr = generate_array(TEST_NUM, 1);
     display_array(arr_ptr, TEST_NUM);
     t = clock();
-    res = (*f)(arr_ptr, 0, TEST_NUM);
+    (*f)(arr_ptr, 0, number);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
-    display_array(res, TEST_NUM);
+    display_array(arr_ptr, TEST_NUM);
+
+    // descending sorted
+    printf("\n- for sorted (Descending) %d elements: ", TEST_NUM);
+    arr_ptr = generate_array(TEST_NUM, 2);
+    display_array(arr_ptr, TEST_NUM);
+    t = clock();
+    (*f)(arr_ptr, 0, number);
+    t = clock() - t;
+    cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
+    printf(":: %f\n", cpu_time_consumption);
+    display_array(arr_ptr, TEST_NUM);
+
+    // all elements equal
+    printf("\n- for all equal %d elements: ", TEST_NUM);
+    arr_ptr = generate_array(TEST_NUM, 500);
+    display_array(arr_ptr, TEST_NUM);
+    t = clock();
+    (*f)(arr_ptr, 0, number);
+    t = clock() - t;
+    cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
+    printf(":: %f\n", cpu_time_consumption);
+    display_array(arr_ptr, TEST_NUM);
 
 }
 
@@ -194,30 +231,25 @@ int* merge_recursive(int* array, int low, int high){
     // low: left start node
     // high: right end node |i.e. (number of elements - 1)
 
-    int conquer(int array[], int low, int mid, int high){
-        int array1[TEST_NUM], array2[TEST_NUM];
-        int num1, num2, i, j, k;
-        num1 = mid - low + 1;
-        num2 = high - mid;
-        for(i=0; i < num1; i++){
-            array1[i] = array[low + i];
+    void conquer(int array[], int low, int mid, int high){
+        int temp[TEST_NUM];
+        int num1, num2, i=low, j=mid+1, k=0;
+        while(i<=mid && j<=high)
+        {
+            if(array[i] < array[j])
+                temp[k++] = array[i++];
+            else
+                temp[k++] = array[j++];
         }
-        for(j=0; j < num2; j++){
-            array2[j] = array[mid + j + 1];
-        }
+        while(i<=mid)
+            temp[k++] = array[i++];
 
-        i=0, j=0;
-        for(int k=0; k<high; k++){
-            if (*(array1 + i) <= *(array2 + j)){
-                *(array + k) = *(array1 + i);
-                i++;
-            }
-            else{
-                *(array + k) = *(array2 + j);
-                j++;
-            }
-        }
-        return 0;
+        while(j<=high)
+            temp[k++] = array[j++];
+
+        //Transfer elements from temp[] back to a[]
+        for(i=low,j=0;i<=high;i++,j++)
+            array[i]=temp[j];
     }
     // PROCESSING
     int mid;
@@ -268,10 +300,11 @@ int main(){
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
 //    analysis(bubble_iterative, "Bubble sort (Iterative)");
-    analysis(insertion_iterative, "Insertion sort (Iterative)");
+//    analysis(insertion_iterative, "Insertion sort (Iterative)");
 //    analysis(selection_iterative, "Selection sort (Iterative)");
 //    analysis(quick_recursive, "Quick sort (Recursive)");
-//    analysis(merge_recursive, "Merge sort (Recursive)");
+    analysis(merge_recursive, "Merge sort (Recursive)");
+    analysis(heap_recursive, "Heap sort (Recursive)");
     // read_file_input();
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;
