@@ -27,7 +27,7 @@ int* bubble_iterative(int* array, int start, int no_of_elements, int dummy){
     return array;
 }
 
-int* insertion_iterative(int* array, int start, int no_of_elements){
+int* insertion_iterative(int* array, int start, int no_of_elements, int dummy){
     // Insertion sort algorithm
 //    printf("\n--------------------Insertion sort--------------------\n");
     register int i, j, key;
@@ -43,7 +43,7 @@ int* insertion_iterative(int* array, int start, int no_of_elements){
     return array;
 }
 
-int* selection_iterative(int* array, int start, int no_of_elements){
+int* selection_iterative(int* array, int start, int no_of_elements, int dummy){
     // Insertion sort algorithm
 //    printf("\n--------------------Selection sort--------------------\n");
     for (register int i = 0; i < no_of_elements-1; i++){  // iterate up to second last element
@@ -58,7 +58,7 @@ int* selection_iterative(int* array, int start, int no_of_elements){
     return array;
 }
 
-int* quick_recursive(int *array, int start, int no_of_elements) {
+int* quick_recursive(int *array, int start, int no_of_elements, int dummy) {
     no_of_elements = no_of_elements-1;
     int partition (int* array, int start, int no_of_elements) {
         int pivot = array[no_of_elements];    // select pivot
@@ -76,8 +76,8 @@ int* quick_recursive(int *array, int start, int no_of_elements) {
     // PROCESSING
     if (start < no_of_elements) {
         int partition_index = partition(array, start, no_of_elements);
-        quick_recursive(array, start, partition_index - 1);
-        quick_recursive(array, partition_index + 1, no_of_elements);
+        quick_recursive(array, start, partition_index - 1, dummy);
+        quick_recursive(array, partition_index + 1, no_of_elements, dummy);
     }
     return array;
 }

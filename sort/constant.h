@@ -4,7 +4,7 @@
 
 #ifndef DSA_LAB_CONSTANT_H
 #define DSA_LAB_CONSTANT_H
-#define TEST_NUM 50
-
+#define TEST_NUM 10
+#define DEBUG 1
 
 #endif //DSA_LAB_CONSTANT_H

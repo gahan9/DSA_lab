@@ -12,11 +12,10 @@
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
-#include "constant.h"
+#define TEST_NUM 50
 #include "utility.h"
 #include "sorting_algorithms.h"
 
-int DEBUG = 0;
 //int TEST_NUM = 10;
 
 
@@ -27,8 +26,8 @@ int* generate_array(int max_element, int sort_flag){
 //    array = (int*)malloc(TEST_NUM * sizeof(int));
     static int array[TEST_NUM];
     if (sort_flag == 0) {  // generate random unsorted numbers if flag is 0
-        for (int i = 0; i < max_element; i++) {
-            array[i] = rand()%100;
+        for (register int i = 0; i < max_element; i++) {
+            array[i] = rand();
         }
     }
     else if (sort_flag == 1){
@@ -53,7 +52,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     int *arr_ptr;
     clock_t t;
     double cpu_time_consumption;
-    int number;
+    int number = TEST_NUM;
     if (algo_name == "Merge sort (Recursive)")
         number = TEST_NUM - 1;
     printf("\nAnalysis of %s", algo_name);
@@ -102,7 +101,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     display_array(arr_ptr, TEST_NUM);
 }
 
-int* heap_recursive(int* array, int start, int no_of_elements){
+int* heap_recursive(int* array, int start, int no_of_elements, int dummy){
     int* heapify(int* array, int heap_size, int idx){
         // heapify array == rearrange array to follow heap structure/rule
         // heap_size: no_of_elements
@@ -138,12 +137,12 @@ int main(){
     clock_t t;
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
-    analysis(bubble_iterative, "Bubble sort (Iterative)");
-    analysis(insertion_iterative, "Insertion sort (Iterative)");
-    analysis(selection_iterative, "Selection sort (Iterative)");
-    analysis(quick_recursive, "Quick sort (Recursive)");
-    analysis(merge_recursive, "Merge sort (Recursive)");
-//    analysis(heap_recursive, "Heap sort (Recursive)");
+//    analysis(bubble_iterative, "Bubble sort (Iterative)");
+//    analysis(insertion_iterative, "Insertion sort (Iterative)");
+//    analysis(selection_iterative, "Selection sort (Iterative)");
+//    analysis(quick_recursive, "Quick sort (Recursive)");
+//    analysis(merge_recursive, "Merge sort (Recursive)");
+    analysis(heap_recursive, "Heap sort (Recursive)");
     // read_file_input();
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;

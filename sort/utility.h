@@ -6,10 +6,9 @@
 #define DSA_LAB_UTILITY_H
 
 #include <stdarg.h>
-extern int DEBUG;
+#include "constant.h"
 
-int write_log(const char *format, ...)
-{
+int write_log(const char *format, ...) {
     if(DEBUG) {
         va_list args;
         va_start (args, format);
