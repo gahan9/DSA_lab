@@ -12,12 +12,44 @@
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
+#include "constant.h"
 #include "utility.h"
 #include "sorting_algorithms.h"
-//#define TEST_NUM 10
 
-int TEST_NUM = 10;
-void analysis(int* (*f)(int *, int,  int), char algo_name[]){
+int DEBUG = 0;
+//int TEST_NUM = 10;
+
+
+int* generate_array(int max_element, int sort_flag){
+    // generate array of n elements
+
+//    static int* array;
+//    array = (int*)malloc(TEST_NUM * sizeof(int));
+    static int array[TEST_NUM];
+    if (sort_flag == 0) {  // generate random unsorted numbers if flag is 0
+        for (int i = 0; i < max_element; i++) {
+            array[i] = rand()%100;
+        }
+    }
+    else if (sort_flag == 1){
+        for(int i=0; i < max_element; i++){  // generate sorted "ascending" numbers if flag is true
+            array[i] = i;
+        }
+    }
+    else if (sort_flag == 2){
+        for(int i=max_element; i > 0; i--){  // generate sorted "descending" numbers if flag is true
+            array[max_element-i] = i;
+        }
+    }
+    else{
+        for(int i=0; i < max_element; i++){  // all elements same
+            array[i] = sort_flag;
+        }
+    }
+    return array;
+}
+
+void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     int *arr_ptr;
     clock_t t;
     double cpu_time_consumption;
@@ -30,7 +62,7 @@ void analysis(int* (*f)(int *, int,  int), char algo_name[]){
     display_array(arr_ptr, number);
     printf("\n- for unsorted %d elements: ", TEST_NUM);
     t = clock();
-    (*f)(arr_ptr, 0, number);
+    (*f)(arr_ptr, 0, number, number);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f", cpu_time_consumption);
@@ -41,7 +73,7 @@ void analysis(int* (*f)(int *, int,  int), char algo_name[]){
     arr_ptr = generate_array(TEST_NUM, 1);
     display_array(arr_ptr, TEST_NUM);
     t = clock();
-    (*f)(arr_ptr, 0, number);
+    (*f)(arr_ptr, 0, number, number);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
@@ -52,7 +84,7 @@ void analysis(int* (*f)(int *, int,  int), char algo_name[]){
     arr_ptr = generate_array(TEST_NUM, 2);
     display_array(arr_ptr, TEST_NUM);
     t = clock();
-    (*f)(arr_ptr, 0, number);
+    (*f)(arr_ptr, 0, number, number);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
@@ -63,12 +95,11 @@ void analysis(int* (*f)(int *, int,  int), char algo_name[]){
     arr_ptr = generate_array(TEST_NUM, 500);
     display_array(arr_ptr, TEST_NUM);
     t = clock();
-    (*f)(arr_ptr, 0, number);
+    (*f)(arr_ptr, 0, number, number);
     t = clock() - t;
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
     display_array(arr_ptr, TEST_NUM);
-
 }
 
 int* heap_recursive(int* array, int start, int no_of_elements){
@@ -107,12 +138,12 @@ int main(){
     clock_t t;
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
-//    analysis(bubble_iterative, "Bubble sort (Iterative)");
-//    analysis(insertion_iterative, "Insertion sort (Iterative)");
-//    analysis(selection_iterative, "Selection sort (Iterative)");
-//    analysis(quick_recursive, "Quick sort (Recursive)");
-//    analysis(merge_recursive, "Merge sort (Recursive)");
-    analysis(heap_recursive, "Heap sort (Recursive)");
+    analysis(bubble_iterative, "Bubble sort (Iterative)");
+    analysis(insertion_iterative, "Insertion sort (Iterative)");
+    analysis(selection_iterative, "Selection sort (Iterative)");
+    analysis(quick_recursive, "Quick sort (Recursive)");
+    analysis(merge_recursive, "Merge sort (Recursive)");
+//    analysis(heap_recursive, "Heap sort (Recursive)");
     // read_file_input();
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;

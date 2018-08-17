@@ -5,7 +5,7 @@
 #ifndef DSA_LAB_SORTING_ALGORITHMS_H
 #define DSA_LAB_SORTING_ALGORITHMS_H
 
-int* bubble_iterative(int* array, int start, int no_of_elements){
+int* bubble_iterative(int* array, int start, int no_of_elements, int dummy){
     // Bubble sort algorithm
     // no_of_elements : parameter require to specify otherwise static size of array found with
 //    printf("\n--------------------Bubble sort--------------------\n");
@@ -82,12 +82,12 @@ int* quick_recursive(int *array, int start, int no_of_elements) {
     return array;
 }
 
-int* merge_recursive(int* array, int low, int high){
+int* merge_recursive(int* array, int low, int high, int no_of_elements){
     // low: left start node
     // high: right end node |i.e. (number of elements - 1)
 
-    void conquer(int array[], int low, int mid, int high){
-        int temp[TEST_NUM];
+    void conquer(int array[], int low, int mid, int high, int no_of_elements){
+        int temp[no_of_elements];
         int num1, num2, i=low, j=mid+1, k=0;
         while(i<=mid && j<=high)
         {
@@ -110,10 +110,10 @@ int* merge_recursive(int* array, int low, int high){
     int mid;
     if (low < high){
         mid = (low + high) / 2;
-        merge_recursive(array, low, mid);
-        merge_recursive(array, mid+1, high);
+        merge_recursive(array, low, mid, no_of_elements);
+        merge_recursive(array, mid+1, high, no_of_elements);
 
-        conquer(array, low, mid, high);
+        conquer(array, low, mid, high, no_of_elements);
     }
     return array;
 }

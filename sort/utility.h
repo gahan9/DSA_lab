@@ -4,42 +4,38 @@
 
 #ifndef DSA_LAB_UTILITY_H
 #define DSA_LAB_UTILITY_H
-extern int TEST_NUM;
 
-int* generate_array(int max_element, int sort_flag){
-    // generate array of n elements
+#include <stdarg.h>
+extern int DEBUG;
 
-    static int* array;
-    array = (int*)malloc(TEST_NUM * sizeof(int));
-//    static int array[TEST_NUM];
-    if (sort_flag == 0) {  // generate random unsorted numbers if flag is 0
-        for (int i = 0; i < max_element; i++) {
-            array[i] = rand()%100;
-        }
+int write_log(const char *format, ...)
+{
+    if(DEBUG) {
+        va_list args;
+        va_start (args, format);
+        vprintf(format, args);
+        va_end (args);
     }
-    else if (sort_flag == 1){
-        for(int i=0; i < max_element; i++){  // generate sorted "ascending" numbers if flag is true
-            array[i] = i;
-        }
+}
+
+int *get_min_max(int *array, int no_of_elements, int min_max[]){
+    // get minimum and maximum of array
+//    printf("elements of array: ");
+    for(int i=0; i<no_of_elements; i++){
+//        printf("%d ", *(array + i));
+        if (*(array + i) < min_max[0])
+            min_max[0] = *(array + i);
+        if (*(array + i) > min_max[1])
+            min_max[1] = *(array + i);
     }
-    else if (sort_flag == 2){
-        for(int i=max_element; i > 0; i--){  // generate sorted "descending" numbers if flag is true
-            array[max_element-i] = i;
-        }
-    }
-    else{
-        for(int i=0; i < max_element; i++){  // all elements same
-            array[i] = sort_flag;
-        }
-    }
-    return array;
+    return min_max;
 }
 
 int display_array(int *array, int no_of_elements){
     // display given array of given size(no. of elements require because sizeof() returns max bound value)
-    printf(": ");
+    write_log(": ");
     for(int i=0; i<no_of_elements; i++){
-        printf( "%d ", *(array + i));
+        write_log( "%d ", *(array + i));
     }
     return 0;
 }
@@ -71,7 +67,7 @@ char** split_string(char* str) {
 
 void read_file_input() {
     // under development function to read inputs from file
-    int ptr[TEST_NUM], count = 0, i, ar_count;
+    int ptr[100], count = 0, i, ar_count;
     char c[100];
     FILE *fp = fopen("file.in", "r");
 
