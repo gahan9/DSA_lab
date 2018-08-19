@@ -6,7 +6,6 @@
 #define DSA_LAB_UTILITY_H
 
 #include <stdarg.h>
-#include "constant.h"
 
 int write_log(const char *format, ...) {
     if(DEBUG) {

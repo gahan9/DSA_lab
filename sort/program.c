@@ -12,7 +12,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
-#define TEST_NUM 50
+#include "constant.h"
 #include "utility.h"
 #include "sorting_algorithms.h"
 
@@ -50,12 +50,14 @@ int* generate_array(int max_element, int sort_flag){
 
 void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     int *arr_ptr;
+    FILE *fptr = fopen("analysis.csv", "a");
     clock_t t;
     double cpu_time_consumption;
     int number = TEST_NUM;
     if (algo_name == "Merge sort (Recursive)")
         number = TEST_NUM - 1;
     printf("\nAnalysis of %s", algo_name);
+
     // unsorted elements
     arr_ptr = generate_array(number, 0);
     display_array(arr_ptr, number);
@@ -66,6 +68,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f", cpu_time_consumption);
     display_array(arr_ptr, number);
+    fprintf(fptr, "%d, %f, %s, random\n", number, cpu_time_consumption, algo_name);
 
     // ascending sorted
     printf("\n- for sorted (Ascending) %d elements: ", TEST_NUM);
@@ -77,6 +80,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
     display_array(arr_ptr, TEST_NUM);
+    fprintf(fptr, "%d, %f, %s, ascending\n", number, cpu_time_consumption, algo_name);
 
     // descending sorted
     printf("\n- for sorted (Descending) %d elements: ", TEST_NUM);
@@ -88,6 +92,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
     display_array(arr_ptr, TEST_NUM);
+    fprintf(fptr, "%d, %f, %s, descending\n", number, cpu_time_consumption, algo_name);
 
     // all elements equal
     printf("\n- for all equal %d elements: ", TEST_NUM);
@@ -99,37 +104,8 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
     display_array(arr_ptr, TEST_NUM);
-}
-
-int* heap_recursive(int* array, int start, int no_of_elements, int dummy){
-    int* heapify(int* array, int heap_size, int idx){
-        // heapify array == rearrange array to follow heap structure/rule
-        // heap_size: no_of_elements
-        int root = idx;  // consider given node as current possible root node
-        int left = 2*idx + 1;
-        int right = 2*idx + 2;
-
-        if (left < heap_size && *(array + left) > *(array + root)){  // right child > eligible root/largest
-            root = left;
-        }
-        if (right < heap_size && *(array + right) > *(array + root)){  // right child > eligible root/largest
-            root = right;
-        }
-        if (root != idx){  // root node is not largest
-            swap(&array[idx], &array[root]);
-            heapify(array, heap_size, idx);
-        }
-    }
-    // PROCESSING
-    for (int i=(no_of_elements/2)-1; i >= 0; i--){
-        heapify(array, no_of_elements, i);
-    }
-    for (int i=no_of_elements-1; i >=0; i--){
-        // move current root to end
-        swap(&array[0], &array[i]);
-        heapify(array, i, 0);  // max heapify
-    }
-    return array;
+    fprintf(fptr, "%d, %f, %s, same\n", number, cpu_time_consumption, algo_name);
+    fclose(fptr);
 }
 
 int main(){
@@ -137,12 +113,12 @@ int main(){
     clock_t t;
     double cpu_time_consumption;
     printf("Initializing Sorting Algorithm for %d numbers...\n", TEST_NUM);
-//    analysis(bubble_iterative, "Bubble sort (Iterative)");
-//    analysis(insertion_iterative, "Insertion sort (Iterative)");
-//    analysis(selection_iterative, "Selection sort (Iterative)");
-//    analysis(quick_recursive, "Quick sort (Recursive)");
-//    analysis(merge_recursive, "Merge sort (Recursive)");
-    analysis(heap_recursive, "Heap sort (Recursive)");
+    analysis(bubble_iterative, "Bubble_sort_(Iterative)");
+    analysis(insertion_iterative, "Insertion_sort_(Iterative)");
+    analysis(selection_iterative, "Selection_sort_(Iterative)");
+    analysis(quick_recursive, "Quick_sort_(Recursive)");
+    analysis(merge_recursive, "Merge_sort_(Recursive)");
+    analysis(heap_recursive, "Heap_sort_(Recursive)");
     // read_file_input();
     printf("\n\n-*-*-*-*-*-*-*-*-*-END OF PROGRAM*-*-*-*-*-*-*-*-*-*-*-*-*\n\n");
     return 0;

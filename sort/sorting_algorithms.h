@@ -118,4 +118,35 @@ int* merge_recursive(int* array, int low, int high, int no_of_elements){
     return array;
 }
 
+int* heap_recursive(int* array, int start, int no_of_elements, int dummy){
+    int* heapify(int* array, int heap_size, int idx){
+        // heapify array == rearrange array to follow heap structure/rule
+        // heap_size: no_of_elements
+        int root = idx;  // consider given node as current possible root node
+        int left = 2*idx + 1;
+        int right = 2*idx + 2;
+
+        if (left < heap_size && *(array + left) > *(array + root)){  // right child > eligible root/largest
+            root = left;
+        }
+        if (right < heap_size && *(array + right) > *(array + root)){  // right child > eligible root/largest
+            root = right;
+        }
+        if (root != idx){  // root node is not largest
+            swap(&array[idx], &array[root]);
+            heapify(array, heap_size, idx);
+        }
+    }
+    // PROCESSING
+    for (int i=(no_of_elements/2)-1; i >= 0; i--){
+        heapify(array, no_of_elements, i);
+    }
+    for (int i=no_of_elements-1; i >=0; i--){
+        // move current root to end
+        swap(&array[0], &array[i]);
+        heapify(array, i, 0);  // max heapify
+    }
+    return array;
+}
+
 #endif //DSA_LAB_SORTING_ALGORITHMS_H
