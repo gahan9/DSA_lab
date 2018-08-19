@@ -143,11 +143,16 @@ DATA_SET, TIME, ALGORITHM, DATA_SET_TYPE
 10, 0.000000, Quick_sort_(Recursive), same
 10, 0.000002, Merge_sort_(Recursive), same
 10, 0.000001, Heap_sort_(Recursive), same
-500000, 775.636628, Bubble_sort_(Iterative), random
-500000, 0.000728, Bubble_sort_(Iterative), ascending
-500000, 611.399237, Bubble_sort_(Iterative), descending
-500000, 0.000739, Bubble_sort_(Iterative), same
-500000, 104.157062, Insertion_sort_(Iterative), random
-500000, 0.000908, Insertion_sort_(Iterative), ascending
-500000, 208.856687, Insertion_sort_(Iterative), descending
-500000, 0.000908, Insertion_sort_(Iterative), same
+,,,,
+500000,775.636628, Bubble_sort_(Iterative), random,
+500000,0.000728, Bubble_sort_(Iterative), ascending,
+500000,611.399237, Bubble_sort_(Iterative), descending,
+500000,0.000739, Bubble_sort_(Iterative), same,
+500000,104.157062, Insertion_sort_(Iterative), random,
+500000,0.000908, Insertion_sort_(Iterative), ascending,
+500000,208.856687, Insertion_sort_(Iterative), descending,
+500000,0.000908, Insertion_sort_(Iterative), same,
+500000,168.033955, Selection_sort_(Iterative), random,
+500000,168.614148, Selection_sort_(Iterative), ascending,
+500000,166.554247, Selection_sort_(Iterative), descending,
+500000,169.217959, Selection_sort_(Iterative), same,
