@@ -1,4 +1,4 @@
-DATA_SET, TIME, ALGORITHM, DATA_SET_TYPE,log10(DATA_SET)
+DATA_SET,TIME, ALGORITHM,DATA_SET_TYPE,log10(DATA_SET)
 10,0.000001, Bubble_sort_(Iterative), ascending,1
 100,0.000001, Bubble_sort_(Iterative), ascending,2
 1000,0.000002, Bubble_sort_(Iterative), ascending,3
