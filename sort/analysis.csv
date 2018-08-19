@@ -1,6 +1,6 @@
 DATA_SET, TIME, ALGORITHM, DATA_SET_TYPE,log10(DATA_SET)
 10,0.000001, Bubble_sort_(Iterative), ascending,1
-100,0, Bubble_sort_(Iterative), ascending,2
+100,0.000001, Bubble_sort_(Iterative), ascending,2
 1000,0.000002, Bubble_sort_(Iterative), ascending,3
 10000,0.000015, Bubble_sort_(Iterative), ascending,4
 50000,0.000074, Bubble_sort_(Iterative), ascending,4.69
@@ -11,7 +11,7 @@ DATA_SET, TIME, ALGORITHM, DATA_SET_TYPE,log10(DATA_SET)
 10000,0.000264, Heap_sort_(Recursive), ascending,4
 50000,0.001318, Heap_sort_(Recursive), ascending,4.69
 100000,0.003485, Heap_sort_(Recursive), ascending,5
-10,0.000001, Insertion_sort_(Iterative), ascending,1
+10,0, Insertion_sort_(Iterative), ascending,1
 100,0.000001, Insertion_sort_(Iterative), ascending,2
 1000,0.000002, Insertion_sort_(Iterative), ascending,3
 10000,0.000018, Insertion_sort_(Iterative), ascending,4
