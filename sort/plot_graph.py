@@ -1,6 +1,4 @@
 import os
-import random
-
 import plotly
 import plotly.graph_objs as go
 
@@ -15,7 +13,7 @@ os.makedirs(STORAGE_DIR, exist_ok=True)
 df_sample = pd.read_csv('https://raw.githubusercontent.com/gahan9/DSA_lab/master/sort/analysis_test.csv')
 
 color = ["#ff7c00", "#a91f78", "#0432ff", "#00a643", "#a6f900", "#fffb00", "#ffd300", "#c8e000"]
-df_sample = df_sample.loc[df_sample['log10(DATA_SET)'] != 4.69]
+# df_sample = df_sample.loc[df_sample['log10(DATA_SET)'] != 4.69]
 ALGORITHMS = [
     'Bubble_sort_(Iterative)',
     'Heap_sort_(Recursive)',
@@ -52,7 +50,7 @@ def plot_graph(algo_name):
         #     fig.append_trace(trace, trace_cnt, 2)
         # trace_cnt += 1
     layout = go.Layout(title=algo_name, barmode='group',
-                       xaxis={'title': 'algorithm and dataset type', 'tickformat': ',d'},
+                       xaxis={'title': 'data set (considering log base 10)', 'tickformat': ',d'},
                        yaxis={'title': 'time (ms)', 'tickformat': ',d'})
     # fig['layout'].update(height=600, width=600, title='specs examples')
 
