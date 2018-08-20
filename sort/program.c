@@ -68,7 +68,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f", cpu_time_consumption);
     display_array(arr_ptr, number);
-    fprintf(fptr, "%d, %f, %s, random\n", number, cpu_time_consumption, algo_name);
+    fprintf(fptr, "%d,%f,%s,random\n", number, cpu_time_consumption, algo_name);
 
     // ascending sorted
     printf("\n- for sorted (Ascending) %d elements: ", TEST_NUM);
@@ -80,7 +80,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
     display_array(arr_ptr, TEST_NUM);
-    fprintf(fptr, "%d, %f, %s, ascending\n", number, cpu_time_consumption, algo_name);
+    fprintf(fptr, "%d,%f,%s,ascending\n", number, cpu_time_consumption, algo_name);
 
     // descending sorted
     printf("\n- for sorted (Descending) %d elements: ", TEST_NUM);
@@ -92,7 +92,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
     display_array(arr_ptr, TEST_NUM);
-    fprintf(fptr, "%d, %f, %s, descending\n", number, cpu_time_consumption, algo_name);
+    fprintf(fptr, "%d,%f,%s,descending\n", number, cpu_time_consumption, algo_name);
 
     // all elements equal
     printf("\n- for all equal %d elements: ", TEST_NUM);
@@ -104,7 +104,7 @@ void analysis(int* (*f)(int *, int,  int, int), char algo_name[]){
     cpu_time_consumption = ((double) (t)) / CLOCKS_PER_SEC;
     printf(":: %f\n", cpu_time_consumption);
     display_array(arr_ptr, TEST_NUM);
-    fprintf(fptr, "%d, %f, %s, same\n", number, cpu_time_consumption, algo_name);
+    fprintf(fptr, "%d,%f,%s,same\n", number, cpu_time_consumption, algo_name);
     fclose(fptr);
 }
 
