@@ -5,6 +5,7 @@
 #ifndef DSA_LAB_UTILITY_H
 #define DSA_LAB_UTILITY_H
 
+#include <string.h>
 #include <stdarg.h>
 
 int write_log(const char *format, ...) {
