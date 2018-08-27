@@ -38,7 +38,7 @@ Btree create(void) {
 static int searchKey(int max_keys, const int *key_array, int search_key){
     int low = -1, high = max_keys, mid;
 
-    // binary search for key lookup
+    // bisaction for key lookup
     while(low + 1 < high) {
         mid = (low + high)/2;
         if(key_array[mid] == search_key) {
