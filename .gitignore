@@ -2,3 +2,4 @@
 *.[s]o[ut]
 *.exe
 cmake-build-debug
+__pycache__
