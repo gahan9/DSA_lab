@@ -11,14 +11,14 @@
 #include "sort/constant.h"
 #include "sort/utility.h"
 #define TREE_ORDER 4
-#define MAX_KEYS 2048
+#define MAX_KEYS 4
 
 
 typedef struct BTree_node {
     int total_keys;    /* how many keys does this node contain? */
     bool is_leaf;     /* is this a leaf node? */
     int keys[MAX_KEYS];
-    struct btNode *kids[MAX_KEYS+1];  /* kids[i] holds nodes < keys[i] */
+    struct BTree_node *kids[MAX_KEYS];  /* kids[i] holds nodes < keys[i] */
 }*Btree;
 
 
