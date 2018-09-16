@@ -11,6 +11,7 @@ class BtreeNode(object):
         self.max_data = self.degree-1  # number of keys per node
         self.keys = []  # store keys/data values
         self.children = []  # store child nodes (list of instances of BtreeNode); empty list if node is leaf node
+        self.parent = None
 
     def __repr__(self):
         return " | ".join(map(str, self.keys))
@@ -76,23 +77,44 @@ class Btree(object):
                     status, msg, node = False, "Value not found", self.root
         return status, msg, node
 
+    def split(self, node):
+        center_idx = len(node.keys) // 1  # center node index
+        median = node.keys[center_idx - 1]  # key to be shift to upper level
+        sibling1_node, sibling2_node = BtreeNode(), BtreeNode()
+        if not node.parent:
+            # split root node for overflow
+            node.keys = [median]
+            node.children = [sibling1_node, sibling2_node]
+            sibling1_node.parent = node
+            sibling2_node.parent = node
+            sibling1_node.keys, sibling2_node.keys = node.keys[:center_idx], node.keys[center_idx:]
+
     def insert(self, value):
-        msg = ""
         if not self.root.keys:
             # initially no keys/data value - initialize root
             self.root.keys.insert(0, value)
-            msg += "success"
+            status, msg, node = True, "LOL!! it was first value!!", self.root
         else:
-            node = self.search(value)
+            status, msg, node = self.search(value)
             for index in range(len(node.keys)):
-                if node.keys[index] < value:  # if existing value becomes greater than key add it to it's place
-                    self.root.keys.insert(index, value)
-                    if self.root.is_balanced:
-                        msg += "success"
-                        break
-        return msg
+                if value < node.keys[index]:  # key is greater than value to be search
+                    node.keys.insert(index, value)
+                elif node.keys[index] <= value < node.keys[index + 1]:
+                    node.keys.insert(index, value)
+                else:
+                    node.keys.insert(index+1, value)
+            if node.is_balanced:
+                status, msg = True, "Balanced - No Split Require"
+            else:
+                msg = "splitting require"
+                self.split(node)
+        print(msg, node.keys)
+        return status, msg, node
 
 
 if __name__ == "__main__":
     b = Btree()
     b.insert(5)
+    b.insert(1)
+    b.insert(15)
+    print(b.root)
