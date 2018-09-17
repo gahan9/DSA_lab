@@ -178,6 +178,8 @@ void Btree_insert(Btree b, int key) {
 
 
 int main(int argc, char *argv[]){
+    // TODO: Sequential Search
+    // TODO: pretty print
     int no_of_elements;
     if (atoi(argv[1]))
         no_of_elements = atoi(argv[1]);
