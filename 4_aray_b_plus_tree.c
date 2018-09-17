@@ -177,16 +177,32 @@ void Btree_insert(Btree b, int key) {
 }
 
 
-int main(){
+int main(int argc, char *argv[]){
+    int no_of_elements;
+    if (atoi(argv[1]))
+        no_of_elements = atoi(argv[1]);
+    else
+        no_of_elements = 100;
     Btree b;
     int i;
     b = create();
     assert(b);
 
-    for(i = 0; i < 100; i++) {
+    for(i = 1; i <= no_of_elements; i++) {
         assert(Btree_Search(b, i) == 0);
         Btree_insert(b, i);
         assert(Btree_Search(b, i) == 1);
     }
+    for(i=0; i < MAX_KEYS-1; i++) {
+        if (b->is_leaf && b->keys[i]) {
+            printf("| %d ", b->keys[i]);
+        }
+        else {
+            for(int j=0; j < MAX_KEYS-1; j++) {
+                printf("| %d ", b->kids[i]->keys[j]);
+            }
+        }
+    }
+    printf("| \n");
     return 0;
 }
