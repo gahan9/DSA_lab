@@ -120,17 +120,6 @@ static Btree _insert(Btree b, int key, int *median) {
 
         *median = b->keys[mid];
 
-        /* make a new node for keys > median */
-        /* picture is:
-         *
-         *      3 5 7
-         *      A B C D
-         *
-         * becomes
-         *          (5)
-         *      3        7
-         *      A B      C D
-         */
         b2 = malloc(sizeof(*b2));
 
         b2->total_keys = b->total_keys - mid - 1;
