@@ -1,5 +1,5 @@
 //
-// Created by gahan on 20/8/18.
+// Created by Gahan Saraiya on 20/8/18.
 // Implement B tree then B+ tree
 // Implement B+ tree of degree 4
 // Insertion, Search
@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #define DEBUG 0
-#include "sort/utility.h"
+#include "../sort/utility.h"
 
 #define TREE_ORDER 4
 
@@ -466,7 +466,7 @@ int main(int argc, char *argv[]) {
            "\n5. Exit"
            "\n######################################################\n");
     int choice;
-    while (choice != 4){
+    while (choice != 5){
         printf("choice: ");
         scanf("%d", &choice);
         int value, result;
