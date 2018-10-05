@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #define DEBUG 0
-#include "../sort/utility.h"
+#include "../utils/utility.h"
 
 #define TREE_ORDER 4
 
