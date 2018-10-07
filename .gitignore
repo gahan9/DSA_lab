@@ -4,3 +4,9 @@
 cmake-build-debug
 __pycache__
 *.out
+
+# latex files
+*.aux
+*.synctex.gz
+_minted*
+*.log
