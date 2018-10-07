@@ -106,7 +106,21 @@ Aim of this practical is to implement Krushkal's algorithm in \textit{C Language
 	\item finds subset of vertex having total weight of all edges in tree is minimized.
 	\item Directly based on MST property.
 \end{itemize}
-\paragraph{Example}\\% Declare layers
+
+\section{Program Logic}
+\begin{enumerate}
+	\item Consider input graph in adjacency matrix 
+	\item Create list of edges for given graph, with their weights.
+	\item Initialize array representing Disjoint set Data Structure
+	\item Sort edge list in ascending order.
+	\item \label{start} Pick Edge with minimum weight (Top item from edge list)
+	\item Remove Edge from edge list
+	\item \label{end} Check for cycle formation if edge selected, if forms cycle then discard it otherwise add it to the list of edges for minimum spanning tree.
+	\item Repeat \ref{start} to \ref{end} until list of edges over or MST (minimum spanning tree) contains $ total\_edges - 1$ edges.
+	
+\end{enumerate}
+
+% Declare layers
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}
 \tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
@@ -146,52 +160,52 @@ Aim of this practical is to implement Krushkal's algorithm in \textit{C Language
 %\end{figure}
 
 \section{Implementation}
-The code is implemented in Python as below
 
 \inputminted[frame=lines, breaklines, linenos]{c}{../krushkal_disjoint_ds.c}
 
-%\section*{Output 1}
-%\inputminted[frame=lines, breaklines]{text}{output1.txt}
+\section*{Output}
+\inputminted[frame=lines, breaklines]{text}{../krushkal_output.txt}
 
 
-\section{Summary}
-\begin{itemize}
-	\tick If directory fits in memory then point query requires only $ 1 $ disk access
-\end{itemize}
 
-\setlength{\tabcolsep}{10pt} % Default value: 6pt
-\renewcommand{\arraystretch}{1.5} % Default value: 1
-\begin{table}[!ht]
-\begin{flushleft}
-\centering
-\caption*{Time Complexity of Extendible Hashing for single record access}
-\begin{tabular}{ l  c c }
-
-\hline
-{} &\multicolumn{2}{ c }{\textbf{Condition}}\\ 
-\cline{1-3}
-\textbf{} & \textbf{directory size < memory size} & \textbf{directory size > memory size} \\
-\hline
-Access & 1 & 2 \\ 
- \hline
-\end{tabular}
-\end{flushleft}
-\end{table}
-
-
-\subsection*{Space Complexity}
-\begin{table}[H]
-	\begin{tabular}{r l}
-		R & Number of records \\
-		B & Block Size \\
-		N & Number of blocks \\
-	\end{tabular}
-\end{table}
-\paragraph{Space Utilization}
-\begin{equation}
-	\frac{R}{B \times N}
-\end{equation}
-\paragraph{Average Utilization} $\ln{2} \approx 0.69$
+%\section{Summary}
+%\begin{itemize}
+%	\tick If directory fits in memory then point query requires only $ 1 $ disk access
+%\end{itemize}
+%
+%\setlength{\tabcolsep}{10pt} % Default value: 6pt
+%\renewcommand{\arraystretch}{1.5} % Default value: 1
+%\begin{table}[!ht]
+%\begin{flushleft}
+%\centering
+%\caption*{Time Complexity of Extendible Hashing for single record access}
+%\begin{tabular}{ l  c c }
+%
+%\hline
+%{} &\multicolumn{2}{ c }{\textbf{Condition}}\\ 
+%\cline{1-3}
+%\textbf{} & \textbf{directory size < memory size} & \textbf{directory size > memory size} \\
+%\hline
+%Access & 1 & 2 \\ 
+% \hline
+%\end{tabular}
+%\end{flushleft}
+%\end{table}
+%
+%
+%\subsection*{Space Complexity}
+%\begin{table}[H]
+%	\begin{tabular}{r l}
+%		R & Number of records \\
+%		B & Block Size \\
+%		N & Number of blocks \\
+%	\end{tabular}
+%\end{table}
+%\paragraph{Space Utilization}
+%\begin{equation}
+%	\frac{R}{B \times N}
+%\end{equation}
+%\paragraph{Average Utilization} $\ln{2} \approx 0.69$
 %----------------------------------------------------------------------------------------
 %\end{multicols}
 \end{document}

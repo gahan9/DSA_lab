@@ -99,23 +99,46 @@ void pretty_print(EdgeList span_list) {
     int cost = 0;
     printf("\nNode\tNode\tWeight");
     for (int i = 0; i < span_list.total_edges; i++) {
-        printf("\n%d\t  %d\t  %d", span_list.data[i].node, span_list.data[i].another_node, span_list.data[i].weight);
+        printf("\n%d\t   %d\t   %d", span_list.data[i].node, span_list.data[i].another_node, span_list.data[i].weight);
         cost = cost + span_list.data[i].weight;
     }
     printf("\n\nCost of minimum spanning tree : %d", cost);
 }
 
-int main() {
-    int i, j, total_cost, number_of_vertices;
+int main(int argc, char *argv[]) {
+    int number_of_vertices = 0;
+    int auto_mode = atoi(argv[1]);
+    if (auto_mode)
+        number_of_vertices = atoi(argv[1]);
+    int num;
+    int i, j, total_cost;
     printf("\n###############################################################"
            "\n### Krushkal's Algorithm for MST(Minimum Spanning Tree).... ###"
            "\n###############################################################\n");
     printf("\nEnter number of vertices: ");
-    scanf("%d", &number_of_vertices);
+    if (!auto_mode)
+        scanf("%d", &number_of_vertices);
+    else
+        printf("%d", number_of_vertices);
     printf("\nEnter the adjacency matrix:\n");
-    for (i = 0; i < number_of_vertices; i++)
-        for (j = 0; j < number_of_vertices; j++)
-            scanf("%d", &Graph[i][j]);
+    for (i = 0; i < number_of_vertices; i++) {
+        for (j = 0; j < number_of_vertices; j++) {
+            if (!auto_mode)
+                scanf("%d", &Graph[i][j]);
+            else {
+                if (i == j) {
+                    printf("\t0");
+                } else {
+                    num = 1 + (rand() % 10);
+                    printf("\t%d", num);
+                    Graph[i][j] = num;
+                }
+            }
+        }
+        if (auto_mode)
+            printf("\n");
+    }
+    printf("\n");
 
     EdgeList mst_edges;
     mst_edges = Krushkal(number_of_vertices);
