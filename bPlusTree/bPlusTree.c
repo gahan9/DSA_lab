@@ -491,6 +491,7 @@ int main(int argc, char *argv[]) {
             case 3:
                 printf("\nBatch Search: ");
                 result = batch_search(root);
+                printf("\n");
                 break;
             case 4:
                 pretty_print(root);

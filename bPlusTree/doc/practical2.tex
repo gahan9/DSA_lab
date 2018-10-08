@@ -112,15 +112,58 @@ Aim of this practical is to analyze the time complexity of sorting algorithms fo
 \section{Implementation}
 
 \subsection{Utility \textbf{\textit{utility.h}}}
-\inputminted[frame=lines, breaklines, linenos]{c}{../utility.h}
+\inputminted[frame=lines, breaklines, linenos]{c}{../../utils/utility.h}
 
 \subsection{Constants \textbf{\textit{constant.h}}}
-\inputminted[frame=lines, breaklines, linenos]{c}{../constant.h}
+\inputminted[frame=lines, breaklines, linenos]{c}{../../utils/constant.h}
 
 \subsection{Main Program - \textbf{\textit{bPlusTree.c}}}
 \inputminted[frame=lines, breaklines, linenos]{c}{../bPlusTree.c}
 
-\section{Analysis}
+\subsection*{Output}
+\inputminted[frame=lines, breaklines]{text}{../bplus.out}
+
+\section{Summary}
+\begin{itemize}
+	\item all leaves at the same lowest level
+	\item all nodes at least half full (except root)
+\end{itemize}
+
+\begin{table}[H]
+	Let $f$ be the degree of tree and $n$ be the total number of data then
+	\centering
+	\caption*{Space Complexity}
+	\begin{tabular}{r | c | c | c | c}
+		& \textbf{Max \# pointers} & \textbf{Max \# keys} & \textbf{Min \# pointers} & \textbf{Min \# keys} \\
+		\hline
+		\hline
+		\textbf{Non-leaf} & $f$ & $f - 1$ & $\lceil f/2 \rceil$ & $\lceil f/2 \rceil - 1$ \\
+		\textbf{Root} & $f$ & $f - 1$ & 2 & 1 \\
+		\textbf{Leaf} & $f$ & $f - 1$ & $\lfloor f/2 \rfloor$ & $\lfloor f/2 \rfloor$ \\
+	\end{tabular}
+\end{table}
+
+
+- Number of disk accesses proportional to the height of the B-tree.
+- The ***worst-case height*** of a B+ tree is:
+
+\begin{table}[H]
+	Let $f$ be the degree of tree and $n$ be the total number of data then
+	\centering
+	\caption*{Space Complexity}
+	\begin{tabular}{r | c | c }
+		& \textbf{Time Complexity} & \textbf{Remarks} \\
+		\hline
+		\hline
+		\textbf{height} & $O(\log_fn)$ & \\
+		\textbf{Root} & $O(f\log_fn)$ & linear search inside each nodes \\
+		\textbf{search} & $O(\log_2f\log_fn)$  & binary search inside each node \\
+		\textbf{insert} & $O(\log_fn)$ & if splitting not require \\
+		\textbf{insert} & $O(f\log_fn)$  & if splitting require \\
+		\textbf{insert} &  $O(\log_fn)$  & if merge not require  \\
+		\textbf{insert} &  $O(f\log_fn)$  & if merge require \\
+	\end{tabular}
+\end{table}
 
 %\subsection{Bubble Sort}
 %\begin{figure}[H]
