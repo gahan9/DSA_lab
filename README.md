@@ -1,6 +1,7 @@
 PRACTICAL_LIST
 ==============
-Sorting
+Practical 1: [Sorting](sort/doc/practical1.pdf)
+--------------------
 
 B+ tree
 
