@@ -47,27 +47,4 @@ void swap(int *one, int *two){
     *two = temp;
 }
 
-
-void read_file_input() {
-    // under development function to read inputs from file
-    int ptr[100], count = 0, i, ar_count;
-    char c[100];
-    FILE *fp = fopen("file.in", "r");
-
-    char in = fgetc(fp);
-    // ar_count = (int) (in - '0');
-    printf("\narr\n");
-    while (in != EOF){
-        if ((int) (in -'0') == -16){
-            printf("\nspace\n");
-        }
-        else{
-            printf("%c - %d\n",in,  (int) (in - '0'));
-        }
-        in = fgetc(fp);
-    }
-    printf("\n\n");
-    fclose (fp);
-}
-
 #endif //DSA_LAB_UTILITY_H
