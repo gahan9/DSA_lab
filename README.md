@@ -1,6 +1,6 @@
 PRACTICAL_LIST
 ==============
-[Practical 1: Analyze running complexity of various sorting algorithm](sort/doc/practical1.pdf)
+[Practical 1: Analyze running complexity of various sorting algorithm](1.sort/doc/practical1.pdf)
 --------------------
 
 [Practical 2: Implementation of B+ Tree](bPlusTree/doc/practical2.pdf)
@@ -9,6 +9,6 @@ PRACTICAL_LIST
 
 [Practical 4: Krushkal's Algorithm with disjoint set data structure]()
 
-Strassen's Algorithm for matrix multiplication
+[Practical 5: Strassen's Algorithm for matrix multiplication]()
 
-Recursive Exponential with Divide and Conquer
+[Practical 6: Recursive Exponential with Divide and Conquer]()
