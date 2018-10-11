@@ -47,22 +47,6 @@ void swap(int *one, int *two){
     *two = temp;
 }
 
-char** split_string(char* str) {
-    // split string by separator space
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-        if (!splits) {
-            return splits;
-        }
-        splits[spaces - 1] = token;
-        token = strtok(NULL, " ");
-    }
-    return splits;
-}
 
 void read_file_input() {
     // under development function to read inputs from file
