@@ -28,6 +28,11 @@ void strassen_multiply(int matrix1[MAX][MAX], int matrix2[MAX][MAX], int operati
         mul5 = (matrix1[offset_i+1][offset_i+1] + matrix1[offset_i+1][offset_i+2]) * (matrix2[offset_i+2][offset_i+2]);
         mul6 = (matrix1[offset_i+2][offset_i+1] - matrix1[offset_i+1][offset_i+1]) * (matrix2[offset_i+1][offset_i+1] + matrix2[offset_i+1][offset_i+2]);
         mul7 = (matrix1[offset_i+1][offset_i+2] - matrix1[offset_i+2][offset_i+2]) * (matrix2[offset_i+2][offset_i+1] + matrix2[offset_i+2][offset_i+2]);
+
+        RESULT[offset_i+1][offset_j+1] = mul1 + mul4 - mul5 + mul7;
+        RESULT[offset_i+1][offset_j+2] = mul3 + mul5;
+        RESULT[offset_i+2][offset_j+1] = mul2 + mul4;
+        RESULT[offset_i+2][offset_j+2] = mul1 - mul2 + mul3 + mul6;
     }
     else{
         strassen_multiply(matrix1, matrix2, operational_size/2, 0, 0);
