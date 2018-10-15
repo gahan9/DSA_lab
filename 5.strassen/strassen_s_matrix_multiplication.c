@@ -15,6 +15,25 @@
 
 int ONE[MAX][MAX];
 int TWO[MAX][MAX];
+int RESULT[MAX][MAX];
+
+void strassen_multiply(int matrix1[MAX][MAX], int matrix2[MAX][MAX], int operational_size, int offset_i, int offset_j){
+    if (operational_size == 2){
+        // Apply strassen multiplication
+        int mul1, mul2, mul3, mul4, mul5, mul6, mul7;
+        mul1 = (matrix1[1][1] + matrix1[2][2]) * (matrix2[1][1] + matrix2[2][2]);
+        mul2 = (matrix1[2][1] + matrix1[2][2]) * (matrix2[1][1]);
+        mul3 = (matrix1[1][1]) * (matrix2[1][2] - matrix2[2][2]);
+        mul4 = (matrix1[2][2]) * (matrix2[2][1] - matrix2[1][1]);
+        mul5 = (matrix1[1][1] + matrix1[1][2]) * (matrix2[2][2]);
+        mul6 = (matrix1[2][1] - matrix1[1][1]) * (matrix2[1][1] + matrix2[1][2]);
+        mul7 = (matrix1[1][2] - matrix1[2][2]) * (matrix2[2][1] + matrix2[2][2]);
+
+    }
+    else{
+        return strassen_multiply(matrix1, matrix2, operational_size/2);
+    }
+}
 
 int main(int argc, char *argv[]){
     int array_size=4;
@@ -32,5 +51,8 @@ int main(int argc, char *argv[]){
     printf("Printing TWO\n");
     show_2d_array(TWO, array_size);
 
+    strassen_multiply(ONE, TWO, array_size, 0, 0);
+    printf("RESULT----\n");
+    show_2d_array(RESULT, array_size);
     return 1;
 }
