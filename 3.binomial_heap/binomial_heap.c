@@ -298,7 +298,9 @@ struct token {
 #define LENGTH(a) (sizeof(a) / sizeof(a[0]))
 
 struct token tokens1[] = {
-        {200,  "!"}
+        {200,  "you!"},
+        {210,  "\n-"},
+        {215,  "Yoda"}
 };
 
 struct token tokens2[] = {
@@ -321,7 +323,7 @@ struct token layout[] = {
 
 struct token title[] = {
         {1000, "\nStar Trek"},
-        {120,  "\nStar Wars"}
+        {550,  "\nStar Wars"}
 };
 
 
@@ -361,14 +363,8 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused))) 
     heap_init(&h2);
     heap_init(&h3);
 
-    int i;
-    for (i = 0; i < LENGTH(tokens2); i++) {
-        struct heap_node *hn = malloc(sizeof(struct heap_node));
-        heap_node_init(hn, tok);
-        heap_insert(token_cmp, &h2, hn);
-    }
-
-    add_tokens(&h2, tokens2, LENGTH(tokens2));
+//    add_tokens(&h1, tokens1, LENGTH(tokens1));
+    add_tokens(&h2, tokens1, LENGTH(tokens2));
 
     add_token_ref(&h3, title, &t1);
     add_token_ref(&h2, title + 1, &t2);
@@ -384,7 +380,7 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused))) 
     heap_decrease(token_cmp, &h1, t1);
     heap_decrease(token_cmp, &h1, t2);
 
-    printf("htest:\n");
+//    printf("htest:\n");
     while (!is_empty(&h1)) {
         hn = heap_take(token_cmp, &h1);
         tok = heap_node_value(hn);
