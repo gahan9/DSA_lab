@@ -39,6 +39,20 @@ int display_array(int *array, int no_of_elements){
     return 0;
 }
 
+int show_2d_array(int array[2048][2048], int no_of_elements){
+    // display given array of given size(no. of elements require because sizeof() returns max bound value)
+    write_log(": ");
+    for(int i=0; i<no_of_elements; i++){
+        printf("a[%d][]: ", i);
+        for(int j=0; j<no_of_elements; j++) {
+//            printf("array[%d][%d]: %d ", i, j, array[i][j]);
+            printf("%d ", array[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
 
 void swap(int *one, int *two){
     // swap function to swap elements by location/address

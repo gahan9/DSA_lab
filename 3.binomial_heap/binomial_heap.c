@@ -362,10 +362,11 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused))) 
     heap_init(&h3);
 
     int i;
-    for (i = 0; i < LENGTH(tokens2); i++)
+    for (i = 0; i < LENGTH(tokens2); i++) {
         struct heap_node *hn = malloc(sizeof(struct heap_node));
         heap_node_init(hn, tok);
-        heap_insert(token_cmp, h2, hn);
+        heap_insert(token_cmp, &h2, hn);
+    }
 
     add_tokens(&h2, tokens2, LENGTH(tokens2));
 

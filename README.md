@@ -11,4 +11,4 @@ PRACTICAL_LIST
 
 [Practical 5: Strassen's Algorithm for matrix multiplication](5.strassen/doc)
 
-[Practical 6: Recursive Exponential with Divide and Conquer](6.recursiveExponential/doc)
+[Practical 6: Recursive Exponential with Divide and Conquer](6.recursiveExponential/doc/practical6.pdf)
