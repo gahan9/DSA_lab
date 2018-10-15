@@ -21,17 +21,19 @@ void strassen_multiply(int matrix1[MAX][MAX], int matrix2[MAX][MAX], int operati
     if (operational_size == 2){
         // Apply strassen multiplication
         int mul1, mul2, mul3, mul4, mul5, mul6, mul7;
-        mul1 = (matrix1[1][1] + matrix1[2][2]) * (matrix2[1][1] + matrix2[2][2]);
-        mul2 = (matrix1[2][1] + matrix1[2][2]) * (matrix2[1][1]);
-        mul3 = (matrix1[1][1]) * (matrix2[1][2] - matrix2[2][2]);
-        mul4 = (matrix1[2][2]) * (matrix2[2][1] - matrix2[1][1]);
-        mul5 = (matrix1[1][1] + matrix1[1][2]) * (matrix2[2][2]);
-        mul6 = (matrix1[2][1] - matrix1[1][1]) * (matrix2[1][1] + matrix2[1][2]);
-        mul7 = (matrix1[1][2] - matrix1[2][2]) * (matrix2[2][1] + matrix2[2][2]);
-
+        mul1 = (matrix1[offset_i+1][offset_i+1] + matrix1[offset_i+2][offset_i+2]) * (matrix2[offset_i+1][offset_i+1] + matrix2[offset_i+2][offset_i+2]);
+        mul2 = (matrix1[offset_i+2][offset_i+1] + matrix1[offset_i+2][offset_i+2]) * (matrix2[offset_i+1][offset_i+1]);
+        mul3 = (matrix1[offset_i+1][offset_i+1]) * (matrix2[offset_i+1][offset_i+2] - matrix2[offset_i+2][offset_i+2]);
+        mul4 = (matrix1[offset_i+2][offset_i+2]) * (matrix2[offset_i+2][offset_i+1] - matrix2[offset_i+1][offset_i+1]);
+        mul5 = (matrix1[offset_i+1][offset_i+1] + matrix1[offset_i+1][offset_i+2]) * (matrix2[offset_i+2][offset_i+2]);
+        mul6 = (matrix1[offset_i+2][offset_i+1] - matrix1[offset_i+1][offset_i+1]) * (matrix2[offset_i+1][offset_i+1] + matrix2[offset_i+1][offset_i+2]);
+        mul7 = (matrix1[offset_i+1][offset_i+2] - matrix1[offset_i+2][offset_i+2]) * (matrix2[offset_i+2][offset_i+1] + matrix2[offset_i+2][offset_i+2]);
     }
     else{
-        return strassen_multiply(matrix1, matrix2, operational_size/2);
+        strassen_multiply(matrix1, matrix2, operational_size/2, 0, 0);
+        strassen_multiply(matrix1, matrix2, operational_size/2, operational_size/2, 0);
+        strassen_multiply(matrix1, matrix2, operational_size/2, 0, operational_size/2);
+        strassen_multiply(matrix1, matrix2, operational_size/2, operational_size/2, operational_size/2);
     }
 }
 
