@@ -1,7 +1,6 @@
 PRACTICAL_LIST
 ==============
 [Practical 1: Analyze running complexity of various sorting algorithm](1.sort/doc/practical1.pdf)
---------------------
 
 [Practical 2: Implementation of B+ Tree](2.bPlusTree/doc/practical2.pdf)
 
