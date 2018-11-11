@@ -20,10 +20,10 @@
 //int RESULT[MAX][MAX];
 int **ONE, **TWO, **RESULT;
 
-int ** matrix_add(int **matrix1, int **matrix2){
+int ** matrix_add(int **matrix1, int **matrix2, int size){
     int **ans;
-    for (int i=0; i < 2; i++){
-        for (int j=0; j < 2; j++){
+    for (int i=0; i < size; i++){
+        for (int j=0; j < size; j++){
 
         }
     }
@@ -31,7 +31,7 @@ int ** matrix_add(int **matrix1, int **matrix2){
 }
 
 
-void conquer(int matrix[MAX][MAX], int operational_size){
+void conquer(int **matrix, int operational_size){
     RESULT;
 }
 
@@ -41,17 +41,6 @@ void strassen_multiply(int **matrix1, int **matrix2, int operational_size, int o
         // Apply strassen multiplication
         int mul1, mul2, mul3, mul4, mul5, mul6, mul7;
         int a, b, c, d, e, f, g, h;
-//        mul1 = (matrix1[offset_i][offset_i] + matrix1[offset_i+1][offset_i+1]) * (matrix2[offset_i][offset_i] + matrix2[offset_i+1][offset_i+1]);
-//        mul2 = (matrix1[offset_i+1][offset_i] + matrix1[offset_i+1][offset_i+1]) * (matrix2[offset_i][offset_i]);
-//        mul3 = (matrix1[offset_i][offset_i]) * (matrix2[offset_i][offset_i+1] - matrix2[offset_i+1][offset_i+1]);
-//        mul4 = (matrix1[offset_i+1][offset_i+1]) * (matrix2[offset_i+1][offset_i] - matrix2[offset_i][offset_i]);
-//        mul5 = (matrix1[offset_i][offset_i] + matrix1[offset_i][offset_i+1]) * (matrix2[offset_i+1][offset_i+1]);
-//        mul6 = (matrix1[offset_i+1][offset_i] - matrix1[offset_i][offset_i]) * (matrix2[offset_i][offset_i] + matrix2[offset_i][offset_i+1]);
-//        mul7 = (matrix1[offset_i][offset_i+1] - matrix1[offset_i+1][offset_i+1]) * (matrix2[offset_i+1][offset_i] + matrix2[offset_i+1][offset_i+1]);
-//        RESULT[offset_i][offset_j] = mul1 + mul4 - mul5 + mul7;
-//        RESULT[offset_i][offset_j+1] = mul3 + mul5;
-//        RESULT[offset_i+1][offset_j] = mul2 + mul4;
-//        RESULT[offset_i+1][offset_j+1] = mul1 - mul2 + mul3 + mul6;
         a = matrix1[offset_i][offset_j];
         b = matrix1[offset_i][offset_j+1];
         c = matrix1[offset_i+1][offset_j];
@@ -79,7 +68,6 @@ void strassen_multiply(int **matrix1, int **matrix2, int operational_size, int o
         strassen_multiply(matrix1, matrix2, operational_size/2, operational_size/2, 0);
         strassen_multiply(matrix1, matrix2, operational_size/2, 0, operational_size/2);
         strassen_multiply(matrix1, matrix2, operational_size/2, operational_size/2, operational_size/2);
-//        conquer(RESULT, operational_size/2);
     }
 }
 

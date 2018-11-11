@@ -10,6 +10,7 @@
 
 int write_log(const char *format, ...) {
     if(DEBUG) {
+        printf("\n[DEBUG_LOG]> ");
         va_list args;
         va_start (args, format);
         vprintf(format, args);

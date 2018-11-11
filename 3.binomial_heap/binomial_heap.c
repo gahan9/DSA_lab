@@ -7,385 +7,330 @@
 // --------------------------------------------------------------------------------------------
 // Implementing Binomial Heap
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <limits.h>
+#include<stdio.h>
+#include<malloc.h>
+#define DEBUG  1
+#include "../utils/utility.h"
 
-#define NOT_IN_HEAP 10000
-
-struct heap_node {
-    struct heap_node *parent;
-    struct heap_node *next;
-    struct heap_node *child;
-
-    unsigned int degree;
-    void *value;
-    struct heap_node **ref;
+struct node {
+    int n;
+    int degree;
+    struct node *parent;
+    struct node *child;
+    struct node *sibling;
 };
 
-struct heap {
-    struct heap_node *head;
-    /* We cache the minimum of the heap.
-     * This speeds up repeated peek operations.
-     */
-    struct heap_node *min;
-};
 
-/* item comparison function:
- * return 1 if a has higher prio than b, 0 otherwise
- */
-typedef int (*heap_prio_t)(struct heap_node *a, struct heap_node *b);
-
-static inline void heap_init(struct heap *heap) {
-    // Initialize Heap
-    heap->head = NULL;
-    heap->min = NULL;
+struct node *CreateBinomialHeap() {
+    struct node *np;
+    np = NULL;
+    return np;
 }
 
-static inline void heap_node_init_ref(struct heap_node **_h, void *value) {
-    // Initialize reference to heap node
-    struct heap_node *h = *_h;
-    h->parent = NULL;
-    h->next = NULL;
-    h->child = NULL;
-    h->degree = NOT_IN_HEAP;
-    h->value = value;
-    h->ref = _h;
+int b_link(struct node *a, struct node *b) {
+    a->parent = b;
+    a->sibling = b->child;
+    b->child = a;
+    b->degree = b->degree + 1;
 }
 
-static inline void heap_node_init(struct heap_node *h, void *value) {
-    // Initialize heap node
-    h->parent = NULL;
-    h->next = NULL;
-    h->child = NULL;
-    h->degree = NOT_IN_HEAP;
-    h->value = value;
-    h->ref = NULL;
+struct node *CreateNode(int k) {
+    struct node *p; //new node;
+    p = (struct node *) malloc(sizeof(struct node));
+    p->n = k;
+    write_log("Node created with element: %d", k);
+    return p;
 }
+int count = 1;
 
-static inline void *heap_node_value(struct heap_node *h) {
-    // set value to heap node
-    return h->value;
-}
+struct node *H = NULL;
+struct node *Hr = NULL;
 
-static inline int is_empty(struct heap *heap) {
-    return heap->head == NULL && heap->min == NULL;
-}
-
-static inline void __heap_link(struct heap_node *root, struct heap_node *child) {
-    // create child node for root node
-    child->parent = root;
-    child->next = root->child;
-    root->child = child;
-    root->degree++;
-}
-
-static inline struct heap_node *__heap_merge(struct heap_node *a, struct heap_node *b) {
-    // merge two heaps
-    struct heap_node *head = NULL;
-    struct heap_node **pos = &head;
-
-    while (a && b) {
-        if (a->degree < b->degree) {
-            *pos = a;
-            a = a->next;
-        } else {
-            *pos = b;
-            b = b->next;
-        }
-        pos = &(*pos)->next;
+int rlist(struct node *a) {
+    if (a->sibling != NULL) {
+        rlist(a->sibling);
+        (a->sibling)->sibling = a;
+    } else {
+        Hr = a;
     }
-    if (a)
-        *pos = a;
+}
+
+int DisplayBinomialHeap(struct node *H) {
+    struct node *p;
+    if (H == NULL) {
+        printf("\nheap empty!!!");
+        return 0;
+    }
+    printf("\n-:[ROOT NODES]:-\n");
+    p = H;
+    while (p != NULL) {
+        printf("%d", p->n);
+        if (p->sibling != NULL)
+            printf("-->");
+        p = p->sibling;
+    }
+    printf("\n");
+
+}
+
+
+struct node *MergeBinomialHeap(struct node *heap1, struct node *heap2) {
+    write_log("Merging Binomial Heaps");
+//    struct node *H = CreateBinomialHeap();
+    if (heap1 != NULL) {
+        // elect heap accordingly Min Heap Condition
+        if (heap2 != NULL && heap1->degree > heap2->degree)
+            H = heap2;
+        else
+            H = heap1;
+    }
     else
-        *pos = b;
-    return head;
-}
+        H = heap2;
 
-/* reverse a linked list of nodes. also clears parent pointer */
-static inline struct heap_node *__heap_reverse(struct heap_node *h) {
-    struct heap_node *tail = NULL;
-    struct heap_node *next;
-
-    if (!h)
-        return h;
-
-    h->parent = NULL;
-    while (h->next) {
-        next = h->next;
-        h->next = tail;
-        tail = h;
-        h = next;
-        h->parent = NULL;
-    }
-    h->next = tail;
-    return h;
-}
-
-static inline void __heap_min(heap_prio_t higher_prio, struct heap *heap, struct heap_node **prev, struct heap_node **node) {
-    struct heap_node *_prev, *cur;
-    *prev = NULL;
-
-    if (!heap->head) {
-        *node = NULL;
-        return;
-    }
-
-    *node = heap->head;
-    _prev = heap->head;
-    cur = heap->head->next;
-    while (cur) {
-        if (higher_prio(cur, *node)) {
-            *node = cur;
-            *prev = _prev;
+    while (heap1 != NULL && heap2 != NULL) {
+        if (heap1->degree < heap2->degree) {
+            heap1 = heap1->sibling;
         }
-        _prev = cur;
-        cur = cur->next;
-    }
-}
-
-static inline void __heap_union(heap_prio_t higher_prio, struct heap *heap, struct heap_node *h2) {
-    struct heap_node *h1;
-    struct heap_node *prev, *x, *next;
-    if (!h2)
-        return;
-    h1 = heap->head;
-    if (!h1) {
-        heap->head = h2;
-        return;
-    }
-    h1 = __heap_merge(h1, h2);
-    prev = NULL;
-    x = h1;
-    next = x->next;
-    while (next) {
-        if (x->degree != next->degree ||
-            (next->next && next->next->degree == x->degree)) {
-            /* nothing to do, advance */
-            prev = x;
-            x = next;
-        } else if (higher_prio(x, next)) {
-            /* x becomes the root of next */
-            x->next = next->next;
-            __heap_link(x, next);
+        else if (heap1->degree == heap2->degree) {
+            heap1 = heap2->sibling;
+            heap1->sibling = heap2;
         } else {
-            /* next becomes the root of x */
-            if (prev)
-                prev->next = next;
-            else
-                h1 = next;
-            __heap_link(next, x);
-            x = next;
+            heap2 = heap2->sibling;
+            heap2->sibling = heap1;
         }
-        next = x->next;
     }
-    heap->head = h1;
+    write_log("binomial heap Merged successfully");
+    return H;
 }
 
-static inline struct heap_node *__heap_extract_min(heap_prio_t higher_prio,
-                                                   struct heap *heap) {
-    struct heap_node *prev, *node;
-    __heap_min(higher_prio, heap, &prev, &node);
-    if (!node)
-        return NULL;
-    if (prev)
-        prev->next = node->next;
+struct node *UnionBinomialHeap(struct node *H1, struct node *H2) {
+    struct node *x_prev;
+    struct node *x_next;
+    struct node *x;
+//    struct node *H = CreateBinomialHeap();
+    H = MergeBinomialHeap(H1, H2);
+    if (H == NULL)
+        return H;
+    x_prev = NULL;
+    x = H;
+    x_next = x->sibling;
+    while (x_next != NULL) {
+        if ((x->degree != x_next->degree) || ((x_next->sibling != NULL) && (x_next->sibling)->degree == x->degree)) {
+            x_prev = x;
+            x = x_next;
+        }
+        else {
+            if (x->n <= x_next->n) {
+                x->sibling = x_next->sibling;
+                b_link(x_next, x);
+            }
+            else {
+                if (x_prev == NULL)
+                    H = x_next;
+                else
+                    x_prev->sibling = x_next;
+                b_link(x, x_next);
+                x = x_next;
+            }
+        }
+        x_next = x->sibling;
+    }
+    return H;
+}
+
+struct node *InsertBinomialHeap(struct node *H, struct node *x) {
+    struct node *H1 = CreateBinomialHeap();
+    x->parent = NULL;
+    x->child = NULL;
+    x->sibling = NULL;
+    x->degree = 0;
+    H1 = x;
+    H = UnionBinomialHeap(H, H1);
+    write_log("Node successfully inserted in to Binomial Heap");
+    return H;
+}
+
+struct node *ExtractMinBinomialHeap(struct node *H1) {
+    int min;
+    struct node *t = NULL;
+    struct node *x = H1;
+    struct node *Hr;
+    struct node *p;
+    Hr = NULL;
+    if (x == NULL) {
+        printf("\nNOTHING TO EXTRACT");
+        return x;
+    }
+// int min=x->n;
+    p = x;
+    while (p->sibling != NULL) {
+        if ((p->sibling)->n < min) {
+            min = (p->sibling)->n;
+            t = p;
+            x = p->sibling;
+        }
+        p = p->sibling;
+    }
+    if (t == NULL && x->sibling == NULL)
+        H1 = NULL;
+    else if (t == NULL)
+        H1 = x->sibling;
+    else if (t->sibling == NULL)
+        t = NULL;
     else
-        heap->head = node->next;
-    __heap_union(higher_prio, heap, __heap_reverse(node->child));
-    return node;
-}
-
-/* insert (and reinitialize) a node into the heap */
-static inline void heap_insert(heap_prio_t higher_prio, struct heap *heap, struct heap_node *node) {
-    struct heap_node *min;
-    node->child = NULL;
-    node->parent = NULL;
-    node->next = NULL;
-    node->degree = 0;
-    if (heap->min && higher_prio(node, heap->min)) {
-        /* swap min cache */
-        min = heap->min;
-        min->child = NULL;
-        min->parent = NULL;
-        min->next = NULL;
-        min->degree = 0;
-        __heap_union(higher_prio, heap, min);
-        heap->min = node;
-    } else
-        __heap_union(higher_prio, heap, node);
-}
-
-static inline void __uncache_min(heap_prio_t higher_prio, struct heap *heap) {
-    struct heap_node *min;
-    if (heap->min) {
-        min = heap->min;
-        heap->min = NULL;
-        heap_insert(higher_prio, heap, min);
+        t->sibling = x->sibling;
+    if (x->child != NULL) {
+        rlist(x->child);
+        (x->child)->sibling = NULL;
     }
+    H = UnionBinomialHeap(H1, Hr);
+    return x;
 }
 
-/* merge addition into target */
-static inline void heap_union(heap_prio_t higher_prio,
-                              struct heap *target, struct heap *addition) {
-    /* first insert any cached minima, if necessary */
-    __uncache_min(higher_prio, target);
-    __uncache_min(higher_prio, addition);
-    __heap_union(higher_prio, target, addition->head);
-    /* this is a destructive merge */
-    addition->head = NULL;
+struct node *Search(struct node *H, int k) {
+    struct node *x = H;
+    struct node *p = NULL;
+    if (x->n == k) {
+        p = x;
+        return p;
+    }
+    if (x->child != NULL && p == NULL) {
+        p = Search(x->child, k);
+    }
+    if (x->sibling != NULL && p == NULL) {
+        p = Search(x->sibling, k);
+    }
+    return p;
 }
 
-static inline struct heap_node *heap_peek(heap_prio_t higher_prio,
-                                          struct heap *heap) {
-    if (!heap->min)
-        heap->min = __heap_extract_min(higher_prio, heap);
-    return heap->min;
+int dec_key(struct node *H, int i, int k) {
+    int temp;
+    struct node *p;
+    struct node *a;
+    struct node *b;
+    p = Search(H, i);
+    if (p == NULL) {
+        printf("\nINVALID CHOICE OF key TO BE REDUCED");
+        return 0;
+    }
+    if (k > p->n) {
+        printf("\nSORa!THE NEW key IS GREATER THAN CURRENT ONE");
+        return 0;
+    }
+    p->n = k;
+    a = p;
+    b = p->parent;
+    while (b != NULL && a->n < b->n) {
+        temp = a->n;
+        a->n = b->n;
+        b->n = temp;
+        a = b;
+        b = b->parent;
+    }
+    printf("\nkey REDUCED SUCCESSFULLa!");
 }
 
-static inline struct heap_node *heap_take(heap_prio_t higher_prio,
-                                          struct heap *heap) {
-    struct heap_node *node;
-    if (!heap->min)
-        heap->min = __heap_extract_min(higher_prio, heap);
-    node = heap->min;
-    heap->min = NULL;
-    if (node)
-        node->degree = NOT_IN_HEAP;
-    return node;
+int BinomialHeapDelete(struct node *H, int k) {
+    struct node *np;
+    if (H == NULL) {
+        printf("\nHEAP EMPTa");
+
+        return 0;
+    }
+    dec_key(H, k, -1000);
+    np = ExtractMinBinomialHeap(H);
+    if (np != NULL)
+        printf("\nNODE DELETED SUCCESSFULLa");
 }
 
-static inline void heap_decrease(heap_prio_t higher_prio, struct heap *heap,
-                                 struct heap_node *node) {
-    struct heap_node *parent;
-    struct heap_node **tmp_ref;
-    void *tmp;
-
-    /* node's priority was decreased, we need to update its position */
-    if (!node->ref)
-        return;
-    if (heap->min != node) {
-        if (heap->min && higher_prio(node, heap->min))
-            __uncache_min(higher_prio, heap);
-        /* bubble up */
-        parent = node->parent;
-        while (parent && higher_prio(node, parent)) {
-            /* swap parent and node */
-            tmp = parent->value;
-            parent->value = node->value;
-            node->value = tmp;
-            /* swap references */
-            if (parent->ref)
-                *(parent->ref) = node;
-            *(node->ref) = parent;
-            tmp_ref = parent->ref;
-            parent->ref = node->ref;
-            node->ref = tmp_ref;
-            /* step up */
-            node = parent;
-            parent = node->parent;
+int main() {
+    int i, n, m, l, choice;
+    struct node *p;
+    struct node *np;
+    char sub_choice;
+//    printf("\nENTER THE NUMBER OF ELEMENTS:");
+//    scanf("%d", &n);
+//    printf("\nENTER THE ELEMENTS:\n");
+//    for (i = 1; i <= n; i++) {
+//        printf("[INSERT]: ");
+//        scanf("%d\n", &m);
+//        write_log("inserting : %d\n", m);
+//        np = CreateNode(m);
+//        H = InsertBinomialHeap(H, np);
+//    }
+//    write_log("Displaying initial heap:");
+//    DisplayBinomialHeap(H);
+    do {
+        printf("\n###################***MENU***#########################"
+               "\n1. Insert"
+               "\n2. Extract Minimum key Node"
+               "\n3. Decrease Node key"
+               "\n4. Delete Node"
+               "\n5. Display Binomial Heap"
+               "\n6. Exit"
+               "\n######################################################\n");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                do {
+                    printf("\n[INSERT]:");
+                    scanf("%d", &m);
+                    write_log("Inserting: %d", m);
+                    p = CreateNode(m);
+                    H = InsertBinomialHeap(H, p);
+                    printf("\n<<<HEAP>>>");
+                    DisplayBinomialHeap(H);
+                    printf("\nInsert More? (y/n): ");
+                    fflush(stdin);
+                    scanf("%c", &sub_choice);
+                } while (sub_choice == 'Y' || sub_choice == 'y');
+                break;
+            case 2:
+                do {
+                    printf("\nEXTRACTING THE MINIMUM key NODE");
+                    p = ExtractMinBinomialHeap(H);
+                    if (p != NULL)
+                        printf("\nTHE EXTRACTED NODE IS %d", p->n);
+                    printf("\n<<<HEAP>>>\n");
+                    DisplayBinomialHeap(H);
+                    printf("\nExtract More?(y/n): ");
+                    fflush(stdin);
+                    scanf("%c", &sub_choice);
+                } while (sub_choice == 'Y' || sub_choice == 'y');
+                break;
+            case 3:
+                do {
+                    printf("\n[NODE KEY TO DECREASE]");
+                    scanf("%d", &m);
+                    printf("\n[NEW KEY]: ");
+                    scanf("%d", &l);
+                    dec_key(H, m, l);
+                    printf("\n<<<HEAP>>>");
+                    DisplayBinomialHeap(H);
+                    printf("\nDecrease More?(ay/n): ");
+                    fflush(stdin);
+                    scanf("%c", &sub_choice);
+                } while (sub_choice == 'Y' || sub_choice == 'y');
+                break;
+            case 4:
+                do {
+                    printf("\n[DELETE]: ");
+                    scanf("%d", &m);
+                    BinomialHeapDelete(H, m);
+                    printf("\nDelete More?(y/n): ");
+                    fflush(stdin);
+                    scanf("%c", &sub_choice);
+                } while (sub_choice == 'Y' || sub_choice == 'y');
+                break;
+            case 5:
+                DisplayBinomialHeap(H);
+                break;
+            case 6:
+                printf("\nGratitude! for interacting with program\n");
+                break;
+            default:
+                printf("\nOoops.... that's invalid choice\n");
         }
-    }
-}
-
-
-struct token {
-    int prio;
-    const char *str;
-};
-
-#define LENGTH(a) (sizeof(a) / sizeof(a[0]))
-
-struct token tokens1[] = {
-        {200,  "you!"},
-        {210,  "\n-"},
-        {215,  "Yoda"}
-};
-
-struct token tokens2[] = {
-    {103, "the Force"},
-    {104, "be"},
-    {112, "with"},
-    {120, "you!"},
-    {100, "\nMay"}
-};
-
-#define line "\n==================================="
-
-struct token layout[] = {
-        {90,  line},
-        {-2,  line},
-        {200, line},
-        {201, "\n\n"}
-};
-
-
-struct token title[] = {
-        {1000, "\nStar Trek"},
-        {550,  "\nStar Wars"}
-};
-
-
-static int token_cmp(struct heap_node *_a, struct heap_node *_b) {
-    struct token *a, *b;
-    a = (struct token *) heap_node_value(_a);
-    b = (struct token *) heap_node_value(_b);
-    return a->prio < b->prio;
-}
-
-static void add_token(struct heap *heap, struct token *tok) {
-    struct heap_node *hn = malloc(sizeof(struct heap_node));
-    heap_node_init(hn, tok);
-    heap_insert(token_cmp, heap, hn);
-}
-
-static void add_token_ref(struct heap *heap, struct token *tok,
-                          struct heap_node **hn) {
-    *hn = malloc(sizeof(struct heap_node));
-    heap_node_init_ref(hn, tok);
-    heap_insert(token_cmp, heap, *hn);
-}
-
-static void add_tokens(struct heap *heap, struct token *tok, int len) {
-    int i;
-    for (i = 0; i < len; i++)
-        add_token(heap, tok + i);
-}
-
-int main(int argc __attribute__((unused)), char **argv __attribute__((unused))) {
-    struct heap h1, h2, h3;
-    struct heap_node *hn;
-    struct heap_node *t1, *t2, *b1, *b2;
-    struct token *tok;
-
-    heap_init(&h1);
-    heap_init(&h2);
-    heap_init(&h3);
-
-//    add_tokens(&h1, tokens1, LENGTH(tokens1));
-    add_tokens(&h2, tokens1, LENGTH(tokens2));
-
-    add_token_ref(&h3, title, &t1);
-    add_token_ref(&h2, title + 1, &t2);
-
-    heap_union(token_cmp, &h2, &h3);
-    heap_union(token_cmp, &h1, &h2);
-
-    heap_union(token_cmp, &h1, &h3);
-
-    title[0].prio = -1;
-    title[1].prio = 99;
-
-    heap_decrease(token_cmp, &h1, t1);
-    heap_decrease(token_cmp, &h1, t2);
-
-//    printf("htest:\n");
-    while (!is_empty(&h1)) {
-        hn = heap_take(token_cmp, &h1);
-        tok = heap_node_value(hn);
-        printf("%s ", tok->str);
-        free(hn);
-    }
+    } while (choice != 6);
     return 0;
 }
