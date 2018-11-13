@@ -7,12 +7,16 @@
 // --------------------------------------------------------------------------------------------
 // Implementing Binomial Heap
 
-#include<stdio.h>
-#include<malloc.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
 #define DEBUG  1
+
 #include "../utils/utility.h"
 
 struct node {
+    // Node for binomial heap
     int n;
     int degree;
     struct node *parent;
@@ -20,134 +24,162 @@ struct node {
     struct node *sibling;
 };
 
+int count = 1;
 
-struct node *CreateBinomialHeap() {
+struct node *MAKE_bin_HEAP() {
     struct node *np;
     np = NULL;
     return np;
 }
 
-int b_link(struct node *a, struct node *b) {
-    a->parent = b;
-    a->sibling = b->child;
-    b->child = a;
-    b->degree = b->degree + 1;
-}
-
-struct node *CreateNode(int k) {
-    struct node *p; //new node;
-    p = (struct node *) malloc(sizeof(struct node));
-    p->n = k;
-    write_log("Node created with element: %d", k);
-    return p;
-}
-int count = 1;
-
 struct node *H = NULL;
 struct node *Hr = NULL;
 
-int rlist(struct node *a) {
-    if (a->sibling != NULL) {
-        rlist(a->sibling);
-        (a->sibling)->sibling = a;
-    } else {
-        Hr = a;
-    }
+int linkBinomialHeap(struct node *y, struct node *z) {
+    y->parent = z;
+    y->sibling = z->child;
+    z->child = y;
+    z->degree = z->degree + 1;
 }
 
-int DisplayBinomialHeap(struct node *H) {
-    struct node *p;
-    if (H == NULL) {
-        printf("\nheap empty!!!");
-        return 0;
-    }
-    printf("\n-:[ROOT NODES]:-\n");
-    p = H;
-    while (p != NULL) {
-        printf("%d", p->n);
-        if (p->sibling != NULL)
-            printf("-->");
-        p = p->sibling;
-    }
-    printf("\n");
-
+struct node *CreateNode(int k) {
+    struct node *p;//new node;
+    p = (struct node *) malloc(sizeof(struct node));
+    p->n = k;
+    return p;
 }
 
-
-struct node *MergeBinomialHeap(struct node *heap1, struct node *heap2) {
-    write_log("Merging Binomial Heaps");
-//    struct node *H = CreateBinomialHeap();
-    if (heap1 != NULL) {
-        // elect heap accordingly Min Heap Condition
-        if (heap2 != NULL && heap1->degree > heap2->degree)
-            H = heap2;
+struct node *BinomialHeapMerge(struct node *H1, struct node *H2) {
+    struct node *H = MAKE_bin_HEAP();
+    struct node *y;
+    struct node *z;
+    struct node *a;
+    struct node *b;
+    y = H1;
+    z = H2;
+    if (y != NULL) {
+        if (z != NULL && y->degree <= z->degree)
+            H = y;
+        else if (z != NULL && y->degree > z->degree)
+            /* need some modifications here;the first and the else conditions can be merged together!!!! */
+            H = z;
         else
-            H = heap1;
-    }
-    else
-        H = heap2;
-
-    while (heap1 != NULL && heap2 != NULL) {
-        if (heap1->degree < heap2->degree) {
-            heap1 = heap1->sibling;
-        }
-        else if (heap1->degree == heap2->degree) {
-            heap1 = heap2->sibling;
-            heap1->sibling = heap2;
+            H = y;
+    } else
+        H = z;
+    while (y != NULL && z != NULL) {
+        if (y->degree < z->degree) {
+            y = y->sibling;
+        } else if (y->degree == z->degree) {
+            a = y->sibling;
+            y->sibling = z;
+            y = a;
         } else {
-            heap2 = heap2->sibling;
-            heap2->sibling = heap1;
+            b = z->sibling;
+            z->sibling = y;
+            z = b;
         }
     }
-    write_log("binomial heap Merged successfully");
     return H;
 }
 
-struct node *UnionBinomialHeap(struct node *H1, struct node *H2) {
-    struct node *x_prev;
-    struct node *x_next;
+struct node *BinomialHeapUnion(struct node *H1, struct node *H2) {
+    struct node *prev_x;
+    struct node *next_x;
     struct node *x;
-//    struct node *H = CreateBinomialHeap();
-    H = MergeBinomialHeap(H1, H2);
+    struct node *H = MAKE_bin_HEAP();
+    H = BinomialHeapMerge(H1, H2);
     if (H == NULL)
         return H;
-    x_prev = NULL;
+    prev_x = NULL;
     x = H;
-    x_next = x->sibling;
-    while (x_next != NULL) {
-        if ((x->degree != x_next->degree) || ((x_next->sibling != NULL) && (x_next->sibling)->degree == x->degree)) {
-            x_prev = x;
-            x = x_next;
-        }
-        else {
-            if (x->n <= x_next->n) {
-                x->sibling = x_next->sibling;
-                b_link(x_next, x);
-            }
-            else {
-                if (x_prev == NULL)
-                    H = x_next;
+    next_x = x->sibling;
+    while (next_x != NULL) {
+        if ((x->degree != next_x->degree) || ((next_x->sibling != NULL)
+                                              && (next_x->sibling)->degree == x->degree)) {
+            prev_x = x;
+            x = next_x;
+        } else {
+            if (x->n <= next_x->n) {
+                x->sibling = next_x->sibling;
+                linkBinomialHeap(next_x, x);
+            } else {
+                if (prev_x == NULL)
+                    H = next_x;
                 else
-                    x_prev->sibling = x_next;
-                b_link(x, x_next);
-                x = x_next;
+                    prev_x->sibling = next_x;
+                linkBinomialHeap(x, next_x);
+                x = next_x;
             }
         }
-        x_next = x->sibling;
+        next_x = x->sibling;
     }
     return H;
 }
 
-struct node *InsertBinomialHeap(struct node *H, struct node *x) {
-    struct node *H1 = CreateBinomialHeap();
+struct node *BinomialHeapInsert(struct node *H, struct node *x) {
+    struct node *H1 = MAKE_bin_HEAP();
     x->parent = NULL;
     x->child = NULL;
     x->sibling = NULL;
     x->degree = 0;
     H1 = x;
-    H = UnionBinomialHeap(H, H1);
-    write_log("Node successfully inserted in to Binomial Heap");
+    H = BinomialHeapUnion(H, H1);
     return H;
+}
+
+//int NodeExplorer(struct node *n){
+//    write_log("Exploring node: %d\n", n->n);
+//    if (n == NULL){
+//        printf("Empty Node!!!\n");
+//        return 0;
+//    }
+//    else{
+//        printf("%d, ", n->n);
+//        if (p->sibling != NULL)
+//            printf("\n-->");
+//    }
+//    printf("\n");
+//}
+
+int DisplayBinomialHeap(struct node *H) {
+    // TODO: Remove redundant print... do pretty print of heap
+//    printf("\n");
+    struct node *p;
+    if (H == NULL) {
+        printf("\nHEAP EMPTY");
+        return 0;
+    }
+//    printf("\nTHE HEAP:-\n");
+    p = H;
+    while (p != NULL) {
+        printf("[%d]", p->n);
+        if (p->sibling != NULL) {
+//            printf("Parent: %d", p->parent->n);
+            printf("------------>");
+            DisplayBinomialHeap(p->sibling);
+        }
+
+        if (p->child != NULL){
+            printf("\nParent: of %d is %d\n",p->child->n, p->n);
+            DisplayBinomialHeap(p->child);
+        }
+        else if (p->child == NULL){
+            printf("---[leaf node] Nothing to explore for this node.");
+        }
+        p = p->sibling;
+    }
+    printf("\n");
+    return 1;
+}
+
+int RevertList(struct node *y) {
+    if (y->sibling != NULL) {
+        RevertList(y->sibling);
+        (y->sibling)->sibling = y;
+    } else {
+        Hr = y;
+    }
 }
 
 struct node *ExtractMinBinomialHeap(struct node *H1) {
@@ -161,7 +193,7 @@ struct node *ExtractMinBinomialHeap(struct node *H1) {
         printf("\nNOTHING TO EXTRACT");
         return x;
     }
-// int min=x->n;
+    //    int min=x->n;
     p = x;
     while (p->sibling != NULL) {
         if ((p->sibling)->n < min) {
@@ -180,14 +212,14 @@ struct node *ExtractMinBinomialHeap(struct node *H1) {
     else
         t->sibling = x->sibling;
     if (x->child != NULL) {
-        rlist(x->child);
+        RevertList(x->child);
         (x->child)->sibling = NULL;
     }
-    H = UnionBinomialHeap(H1, Hr);
+    H = BinomialHeapUnion(H1, Hr);
     return x;
 }
 
-struct node *Search(struct node *H, int k) {
+struct node *FIND_NODE(struct node *H, int k) {
     struct node *x = H;
     struct node *p = NULL;
     if (x->n == k) {
@@ -195,142 +227,110 @@ struct node *Search(struct node *H, int k) {
         return p;
     }
     if (x->child != NULL && p == NULL) {
-        p = Search(x->child, k);
+        p = FIND_NODE(x->child, k);
     }
+
     if (x->sibling != NULL && p == NULL) {
-        p = Search(x->sibling, k);
+        p = FIND_NODE(x->sibling, k);
     }
     return p;
 }
 
-int dec_key(struct node *H, int i, int k) {
+int bin_HEAP_DECREASE_KEY(struct node *H, int i, int k) {
     int temp;
     struct node *p;
-    struct node *a;
-    struct node *b;
-    p = Search(H, i);
+    struct node *y;
+    struct node *z;
+    p = FIND_NODE(H, i);
     if (p == NULL) {
-        printf("\nINVALID CHOICE OF key TO BE REDUCED");
+        printf("\nINVALID CHOICE OF KEY TO BE REDUCED");
         return 0;
     }
     if (k > p->n) {
-        printf("\nSORa!THE NEW key IS GREATER THAN CURRENT ONE");
+        printf("\nSORY!THE NEW KEY IS GREATER THAN CURRENT ONE");
         return 0;
     }
     p->n = k;
-    a = p;
-    b = p->parent;
-    while (b != NULL && a->n < b->n) {
-        temp = a->n;
-        a->n = b->n;
-        b->n = temp;
-        a = b;
-        b = b->parent;
+    y = p;
+    z = p->parent;
+    while (z != NULL && y->n < z->n) {
+        temp = y->n;
+        y->n = z->n;
+        z->n = temp;
+        y = z;
+        z = z->parent;
     }
-    printf("\nkey REDUCED SUCCESSFULLa!");
+    printf("\nKEY REDUCED SUCCESSFULLY!");
 }
 
-int BinomialHeapDelete(struct node *H, int k) {
+int bin_HEAP_DELETE(struct node *H, int k) {
     struct node *np;
     if (H == NULL) {
-        printf("\nHEAP EMPTa");
-
+        printf("\nHEAP EMPTY");
         return 0;
     }
-    dec_key(H, k, -1000);
+
+    bin_HEAP_DECREASE_KEY(H, k, -1000);
     np = ExtractMinBinomialHeap(H);
     if (np != NULL)
-        printf("\nNODE DELETED SUCCESSFULLa");
+        printf("\nNODE DELETED SUCCESSFULLY");
 }
 
-int main() {
-    int i, n, m, l, choice;
+int main(int argc, char *argv[]) {
+    int i, n, m, l;
     struct node *p;
     struct node *np;
-    char sub_choice;
-//    printf("\nENTER THE NUMBER OF ELEMENTS:");
-//    scanf("%d", &n);
-//    printf("\nENTER THE ELEMENTS:\n");
-//    for (i = 1; i <= n; i++) {
-//        printf("[INSERT]: ");
-//        scanf("%d\n", &m);
-//        write_log("inserting : %d\n", m);
-//        np = CreateNode(m);
-//        H = InsertBinomialHeap(H, np);
-//    }
-//    write_log("Displaying initial heap:");
+    char ch;
+    int number_of_elements;
+    if (atoi(argv[1]))
+        number_of_elements = atoi(argv[1]);
+    else
+        number_of_elements = 5;  // elements to be pre filled
+    for (i = 1; i <= number_of_elements; i++) {
+        m = rand() % 10;
+        printf("Inserting: %d\n", m);
+        np = CreateNode(m);
+        H = BinomialHeapInsert(H, np);
+    }
 //    DisplayBinomialHeap(H);
     do {
         printf("\n###################***MENU***#########################"
                "\n1. Insert"
                "\n2. Extract Minimum key Node"
-               "\n3. Decrease Node key"
-               "\n4. Delete Node"
-               "\n5. Display Binomial Heap"
-               "\n6. Exit"
+               "\n3. Display Binomial Heap"
+               "\n4. Exit"
                "\n######################################################\n");
-        scanf("%d", &choice);
-        switch (choice) {
+        scanf("%d", &l);
+        switch (l) {
             case 1:
-                do {
-                    printf("\n[INSERT]:");
-                    scanf("%d", &m);
-                    write_log("Inserting: %d", m);
-                    p = CreateNode(m);
-                    H = InsertBinomialHeap(H, p);
-                    printf("\n<<<HEAP>>>");
-                    DisplayBinomialHeap(H);
-                    printf("\nInsert More? (y/n): ");
-                    fflush(stdin);
-                    scanf("%c", &sub_choice);
-                } while (sub_choice == 'Y' || sub_choice == 'y');
+                printf("\n[INSERT]:");
+                scanf("%d", &m);
+                write_log("Inserting: %d", m);
+                p = CreateNode(m);
+                H = BinomialHeapInsert(H, p);
+                printf("\n<<<HEAP>>>");
+                DisplayBinomialHeap(H);
+                scanf("%c", &ch);
                 break;
             case 2:
-                do {
-                    printf("\nEXTRACTING THE MINIMUM key NODE");
-                    p = ExtractMinBinomialHeap(H);
-                    if (p != NULL)
-                        printf("\nTHE EXTRACTED NODE IS %d", p->n);
-                    printf("\n<<<HEAP>>>\n");
-                    DisplayBinomialHeap(H);
-                    printf("\nExtract More?(y/n): ");
-                    fflush(stdin);
-                    scanf("%c", &sub_choice);
-                } while (sub_choice == 'Y' || sub_choice == 'y');
+                printf("\nExtracting min key node");
+                p = ExtractMinBinomialHeap(H);
+                if (p != NULL)
+                    printf("\nExtracted node is %d", p->n);
+                printf("\n<<<HEAP>>>");
+                DisplayBinomialHeap(H);
+                scanf("%c", &ch);
                 break;
             case 3:
-                do {
-                    printf("\n[NODE KEY TO DECREASE]");
-                    scanf("%d", &m);
-                    printf("\n[NEW KEY]: ");
-                    scanf("%d", &l);
-                    dec_key(H, m, l);
-                    printf("\n<<<HEAP>>>");
-                    DisplayBinomialHeap(H);
-                    printf("\nDecrease More?(ay/n): ");
-                    fflush(stdin);
-                    scanf("%c", &sub_choice);
-                } while (sub_choice == 'Y' || sub_choice == 'y');
-                break;
-            case 4:
-                do {
-                    printf("\n[DELETE]: ");
-                    scanf("%d", &m);
-                    BinomialHeapDelete(H, m);
-                    printf("\nDelete More?(y/n): ");
-                    fflush(stdin);
-                    scanf("%c", &sub_choice);
-                } while (sub_choice == 'Y' || sub_choice == 'y');
-                break;
-            case 5:
+                printf("\n<<<HEAP>>>");
                 DisplayBinomialHeap(H);
                 break;
-            case 6:
+            case 4:
                 printf("\nGratitude! for interacting with program\n");
                 break;
             default:
                 printf("\nOoops.... that's invalid choice\n");
+                break;
         }
-    } while (choice != 6);
-    return 0;
+    } while (l != 4);
 }
