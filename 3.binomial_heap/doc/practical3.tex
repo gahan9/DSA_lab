@@ -14,6 +14,7 @@
 \usepackage[english]{babel} % English language/hyphenation
 \usepackage{amsmath,amsfonts,amsthm} % Math packages
 \usepackage[utf8]{inputenc}
+\usepackage{xcolor}
 \usepackage{float}
 \usepackage{lipsum} % Package to generate dummy text throughout this template
 \usepackage{blindtext}
@@ -49,13 +50,7 @@
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
 
-
-%----------------------------------------------------------------------------------------
-%----------------------------------------------------------------------------------------
-%       CUSTOM HEADER TEXT
-%----------------------------------------------------------------------------------------
 \fancyhead[C]{Institute of Technology, Nirma University $\bullet$ October 2018} % Custom header text
-%----------------------------------------------------------------------------------------
 
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 %----------------------------------------------------------------------------------------
@@ -85,6 +80,15 @@
 	pdfcreator={Gahan M. Saraiya},
 	pdfproducer={Gahan M. Saraiya},
 }
+\definecolor{LightGray}{gray}{0.9}
+\setminted[text]{
+	frame=lines, 
+	breaklines,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	%	fontsize=\small
+}
+
 %----------------------------------------------------------------------------------------
 \usepackage{devanagari}
 \begin{document}
@@ -108,5 +112,8 @@ Aim of this practical is to analyze the time complexity of sorting algorithms fo
 
 \subsection{Main Program - \textbf{\textit{binomial\_heap.c}}}
 \inputminted[frame=lines, breaklines, linenos]{c}{../binomial_heap.c}
+
+\subsection{Output}
+\inputminted{text}{../output.txt}
 
 \end{document}
