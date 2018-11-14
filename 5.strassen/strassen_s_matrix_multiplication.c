@@ -126,43 +126,32 @@ void multiply(int **c, int **d, int size, int size2, int **new){
 
         add(c11, c22, new_matrix_size, temp1);
         add(d11, d22, new_matrix_size, temp2);
-
         multiply(temp1, temp2, new_matrix_size, size, m1);
-//        free(temp1);
-//        free(temp2);
+
         add(c21, c22, new_matrix_size, temp3);
         multiply(temp3, d11, new_matrix_size, size, m2);
-//        free(temp3);
 
 
         sub(d12, d22, new_matrix_size, temp4);
         multiply(c11, temp4, new_matrix_size, size, m3);
-//        free(temp4);
 
         sub(d21, d11, new_matrix_size, temp5);
         multiply(c22, temp5, new_matrix_size, size, m4);
-//        free(temp5);
 
         add(c11, c12, new_matrix_size, temp6);
         multiply(temp6, d22, new_matrix_size, size, m5);
-//        free(temp6);
 
         sub(c21, c11, new_matrix_size, temp7);
         add(d11, d12, new_matrix_size, temp8);
         multiply(temp7, temp8, new_matrix_size, size, m6);
-//        free(temp7);
-//        free(temp8);
 
         sub(c12, c22, new_matrix_size, temp9);
         add(d21, d22, new_matrix_size, temp10);
         multiply(temp9, temp10, new_matrix_size, size, m7);
-//        free(temp9);
-//        free(temp10);
-
 
         add(m1, m7, new_matrix_size, te1);
         sub(m4, m5, new_matrix_size, te2);
-        add(te1, te2, new_matrix_size, temp3);    //c11
+        add(te1, te2, new_matrix_size, te3);    //c11
 
         add(m3, m5, new_matrix_size, te4);     //c12
         add(m2, m4, new_matrix_size, te5);     //c21
