@@ -12,7 +12,7 @@ PRACTICAL_LIST
 
 [Practical 6: Recursive Exponential with Divide and Conquer](6.recursiveExponential/doc/practical6.pdf)
 
-[Practical 7: Chain Matrix Multiplication with Dynamic Programming](6.recursiveExponential/doc/practical6.pdf)
+[Practical 7: Chain Matrix Multiplication with Dynamic Programming](7.chain_matrix_multiplication_DP/doc/practical6.pdf)
 
 [Practical 8: 8-queens problem using backtracking](6.recursiveExponential/doc/practical6.pdf)
 
