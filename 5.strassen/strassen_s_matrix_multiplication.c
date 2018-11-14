@@ -234,14 +234,14 @@ void main(){
     for (i = 0; i < size; i++) {
         new[i] = malloc(size * sizeof(int));
     }
+    printf("Multiplying matrix 1--------\n");
+    show_2d_array(a, size);
+    printf("with matrix 2--------\n");
+    show_2d_array(b, size);
     multiply(a, b, size, size, new);
 
     if (tempS < size)
         size = tempS;
-    for (i = 0; i < size; i++) {
-        for (j = 0; j < size; j++) {
-            printf("%d   ", new[i][j]);
-        }
-        printf("\n");
-    }
+    printf("Answer:---\n");
+    show_2d_array(new, size);
 }

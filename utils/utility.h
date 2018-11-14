@@ -40,16 +40,16 @@ int display_array(int *array, int no_of_elements){
     return 0;
 }
 
-int show_2d_array(int array[2048][2048], int no_of_elements){
+int show_2d_array(int **array, int no_of_elements){
     // display given array of given size(no. of elements require because sizeof() returns max bound value)
     write_log(": ");
     for(int i=0; i<no_of_elements; i++){
-        printf("a[%d][]: ", i);
+        printf("a[%d][i]: ", i);
         for(int j=0; j<no_of_elements; j++) {
 //            printf("array[%d][%d]: %d ", i, j, array[i][j]);
-            printf("%d ", array[i][j]);
+            printf("%d\t", array[i][j]);
         }
-        printf("\n");
+        printf("\twhere 0<=i<=%d\n", no_of_elements-1);
     }
     return 0;
 }

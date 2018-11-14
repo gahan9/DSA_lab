@@ -1,0 +1,38 @@
+Inserting: 3
+Inserting: 6
+Inserting: 7
+Inserting: 5
+Inserting: 3
+
+###################***MENU***#########################
+1. Insert
+2. Extract Minimum key Node
+3. Display Binomial Heap
+4. Exit
+######################################################
+
+<<<HEAP>>>[3]------------>[3]
+Parent: of 5 is 3
+[5]------------>[6]---[leaf node] Nothing to explore for this node.
+
+Parent: of 7 is 5
+[7]---[leaf node] Nothing to explore for this node.
+[6]---[leaf node] Nothing to explore for this node.
+
+---[leaf node] Nothing to explore for this node.[3]
+Parent: of 5 is 3
+[5]------------>[6]---[leaf node] Nothing to explore for this node.
+
+Parent: of 7 is 5
+[7]---[leaf node] Nothing to explore for this node.
+[6]---[leaf node] Nothing to explore for this node.
+
+
+###################***MENU***#########################
+1. Insert
+2. Extract Minimum key Node
+3. Display Binomial Heap
+4. Exit
+######################################################
+
+Gratitude! for interacting with program

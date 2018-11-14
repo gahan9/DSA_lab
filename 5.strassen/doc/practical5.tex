@@ -14,6 +14,7 @@
 \usepackage[english]{babel} % English language/hyphenation
 \usepackage{amsmath,amsfonts,amsthm} % Math packages
 \usepackage[utf8]{inputenc}
+\usepackage{xcolor}
 \usepackage{float}
 \usepackage{lipsum} % Package to generate dummy text throughout this template
 \usepackage{blindtext}
@@ -49,22 +50,9 @@
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
 
-
-%----------------------------------------------------------------------------------------
-%----------------------------------------------------------------------------------------
-%       CUSTOM HEADER TEXT
-%----------------------------------------------------------------------------------------
-\fancyhead[C]{Institute of Technology, Nirma University $\bullet$ September 2018} % Custom header text
-%----------------------------------------------------------------------------------------
+\fancyhead[C]{Institute of Technology, Nirma University $\bullet$ October 2018} % Custom header text
 
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
-%----------------------------------------------------------------------------------------
-%       PACKAGE for code highlight
-%----------------------------------------------------------------------------------------
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-
-\usepackage{minted} % for highlighting code sytax
 %----------------------------------------------------------------------------------------
 %       TITLE SECTION
 %----------------------------------------------------------------------------------------
@@ -86,14 +74,44 @@
 	pdfproducer={Gahan M. Saraiya},
 }
 %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fourier} 
+\usepackage{array}
+\usepackage{makecell}
+
+\renewcommand\theadalign{bc}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[4pt]}
+\renewcommand\cellgape{\Gape[4pt]}
+\newcommand*\tick{\item[\Checkmark]}
+\newcommand*\arrow{\item[$\Rightarrow$]}
+\newcommand*\fail{\item[\XSolidBrush]}
+\usepackage{minted} % for highlighting code sytax
+\definecolor{LightGray}{gray}{0.9}
+
+\setminted[text]{
+	frame=lines, 
+	breaklines,
+	baselinestretch=1.2,
+	bgcolor=LightGray,
+	%	fontsize=\small
+}
+
+\setminted[python]{
+	frame=lines, 
+	breaklines, 
+	linenos,
+	baselinestretch=1.2,
+	%	bgcolor=LightGray,
+	%	fontsize=\small
+}
 
 \begin{document}
 \maketitle % Insert title
 \thispagestyle{fancy} % All pages have headers and footers
-
-\newcommand*\tick{\item[\Checkmark]}
-\newcommand*\arrow{\item[$\Rightarrow$]}
-\newcommand*\fail{\item[\XSolidBrush]}
 
 \section{Introduction}
 \paragraph{}
@@ -109,8 +127,8 @@ Aim of this practical is to implement C program to calculate exponential value f
 
 \subsubsection{Output}
 \inputminted[frame=lines, breaklines, linenos]{text}{../output.txt}
-
-\subsubsection{Output}
-\inputminted[frame=lines, breaklines, linenos]{text}{../output2.txt}
+%
+%\subsubsection{Output}
+%\inputminted[frame=lines, breaklines, linenos]{text}{../output2.txt}
 
 \end{document}
