@@ -16,4 +16,4 @@ PRACTICAL_LIST
 
 [Practical 8: 8-queens problem using backtracking](6.recursiveExponential/doc/practical6.pdf)
 
-[Practical 9: Assignment Problem/TSP using Branch and Bound](6.recursiveExponential/doc/practical6.pdf)
+[Practical 9: Assignment Problem/TSP using Branch and Bound](9.tsp/doc/practical9.pdf)
