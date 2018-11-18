@@ -8,70 +8,63 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
-#include "../utils/constant.h"
-#include "../utils/utility.h"
 
-int sol = 1;
+int counter = 1;
 
-void pretty_print(char **board, int board_size) {
+int placeQueen(int *board, int row_no) {
+    for (register int i = 0; i < row_no; i++) {
+        if (board[i] == board[row_no])
+            return false; // same column
+        if ((board[i] - board[row_no]) == (row_no - i))
+            return false; // same major diagonal
+        if ((board[row_no] - board[i]) == (row_no - i))
+            return false; // same minor diagonal
+    }
+    return true;
+}
+
+void pretty_print(int q[], int board_size) {
     printf("\n");
-
-    for (register int i = 0; i < board_size; i++) {
-        for (register int j = 0; j < board_size; j++)
-            printf("%c", board[i][j]);
+    for (int i = 0; i < board_size; i++) {
+        for (int j = 0; j < board_size; j++) {
+            if (q[i] == j)
+                printf("Q ");
+            else
+                printf("* ");
+        }
         printf("\n");
     }
 }
 
-int get_marked_col(int row_no, char **board, int board_size) {
-    for (register int i=0; i < board_size; i++) {
-        if(board[row_no][i] == "Q"){
-            return (i);
-            break;
-        }
-    }
-}
-
-int feasible(int row_no, int col_no, char **board, int board_size) {
-    register int temp_col;
-    for (register int i = 0; i < board_size; i++) {
-        temp_col = get_marked_col(i, board, board_size);
-        if (col_no == temp_col || abs(row_no - i) == abs(col_no - temp_col))
-            return 0;
-    }
-    return 1;
-}
-
-void queens(int row_no, char **board, int board_size) {
-    if (row_no < board_size) {
-        for (register int i = 0; i < board_size; i++) {
-            if (feasible(row_no, i, board, board_size)) {
-                board[row_no][i] = 'Q';
-                queens(row_no + 1, board, board_size);
-                board[row_no][i] = '_';
-            }
-        }
+void queenLogic(int *queens, int row_no, int board_size) {
+    if (row_no == board_size) {
+        pretty_print(queens, board_size);
+        if (counter % 10 == 1)
+            printf("%dst solution found...\n", counter);
+        else if (counter % 10 == 2)
+            printf("%dnd solution found...\n", counter);
+        else if (counter % 10 == 3)
+            printf("%drd solution found...\n", counter);
+        else
+            printf("%dth solution found...\n", counter);
+        counter++;
     } else {
-        printf("\n----------Solution #%d----------\n", sol);
-        pretty_print(board, board_size);
-        sol++;
+        for (int i = 0; i < board_size; i++) {
+            queens[row_no] = i;
+            if (placeQueen(queens, row_no))
+                queenLogic(queens, row_no + 1, board_size);
+        }
     }
 }
-
 
 int main() {
-    int N = 8;
-    char **board = malloc(N * sizeof(char *));
-    printf("###########------------------############"
-           "#---------- %d queen Problem -----------#"
-           "#---------------------------------------#", N);
-    for (int i = 0; i < N; i++) {
-        board[i] = malloc(N * sizeof(char));
-        for (int j = 0; j < N; j++) {
-            board[i][j] = '_';
-        }
-    }
-    queens(0, board, N);
-    return 0;
+    int board_size = 8;
+    int *queens = malloc(board_size * sizeof(int));
+    printf("###########------------------############\n"
+           "#---------- %d queen Problem -----------#\n"
+           "#---------------------------------------#\n", board_size);
+    queenLogic(queens, 0, board_size);
+    return 1;
 }

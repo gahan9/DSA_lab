@@ -50,14 +50,17 @@
 \fancyhead{} % Blank out the default header
 \fancyfoot{} % Blank out the default footer
 
-\fancyhead[C]{Institute of Technology, Nirma University $\bullet$ October 2018} % Custom header text
+% *** SPECIALIZED LIST PACKAGES ***
+%
+\usepackage{algorithmic}
+\fancyhead[C]{Institute of Technology, Nirma University $\bullet$ November 2018} % Custom header text
 
 \fancyfoot[RO,LE]{\thepage} % Custom footer text
 %----------------------------------------------------------------------------------------
 %       TITLE SECTION
 %----------------------------------------------------------------------------------------
 \title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{
-		\underline{Practical 5}\\Implementation of Strassen’s Fast Multiplication of Matrices Algorithm}} % Article title
+		\underline{Practical 7}\\8-Queen Problem using Back Tracking}} % Article title
 \author{\large{\textsc{
 		Gahan M. Saraiya, 18MCEC10 }}\\[2mm]
 %\thanks{A thank you or further information}\\ % Your name
@@ -74,13 +77,6 @@
 	pdfproducer={Gahan M. Saraiya},
 }
 
-\setminted[text]{
-	frame=lines, 
-	breaklines,
-	baselinestretch=1.2,
-	bgcolor=LightGray,
-	%	fontsize=\small
-}
 %----------------------------------------------------------------------------------------
 %----------------------------------------------------------------------------------------
 \usepackage[utf8]{inputenc}
@@ -123,15 +119,18 @@
 
 \section{Introduction}
 \paragraph{}
-Aim of this practical is to perform chain matrix multiplication using Dynamic Programming
+Aim of this practical is to perform chain matrix multiplication using Dynamic Programming.
+\begin{itemize}
+	\item A 8 x 8 chess board and 8 queens where Queens can move horizontally, vertically and diagonally.
+	\item A chessboard with N queens arranged on the board in such a way that no two queens can attack each other.
+	\item use backtracking each time we got bounded by constraints i.e, when we have no more place valid to place the new queens in the board.
+	\item Also, before placing a new queen to the board, at first the position in the board should be throughly checked and if the place is valid then we could place a new queen on the board. 
+\end{itemize}
 
 \section{Implementation}
 
-\subsection{Utility \textbf{\textit{utility.h}}}
-\inputminted[frame=lines, breaklines, linenos]{c}{../../utils/utility.h}
-
-\subsection{Main Program - \textbf{\textit{recursive\_exponential.c}}}
-\inputminted[frame=lines, breaklines, linenos]{c}{../chain_matrix_multiplication_DP.c}
+\subsection{Main Program - \textbf{\textit{8queen.c}}}
+\inputminted[frame=lines, breaklines, linenos]{c}{../8queen.c}
 
 \subsubsection{Output}
 \inputminted[frame=lines, breaklines, linenos]{text}{../output.txt}
