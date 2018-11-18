@@ -8,7 +8,7 @@ PRACTICAL_LIST
 
 [Practical 4: Krushkal's Algorithm with disjoint set data structure](4.krushkal/doc/krushkal.pdf)
 
-[Practical 5.a: Strassen's Algorithm for matrix multiplication](5.a.strassen/doc)
+[Practical 5.a: Strassen's Algorithm for matrix multiplication](5.a.strassen/doc/practical5.pdf)
 
 [Practical 5.b: Recursive Exponential with Divide and Conquer](5.b.recursiveExponential/doc/practical5.b.pdf)
 
