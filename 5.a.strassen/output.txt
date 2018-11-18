@@ -37,7 +37,8 @@ a[2][3]: 1
 a[3][0]: 1
 a[3][1]: 1
 a[3][2]: 1
-a[3][3]: Multiplying matrix 1--------
+a[3][3]: 1
+Multiplying matrix 1--------
 a[0][i]: 1	1	1	1		where 0<=i<=3
 a[1][i]: 1	1	1	1		where 0<=i<=3
 a[2][i]: 1	1	1	1		where 0<=i<=3

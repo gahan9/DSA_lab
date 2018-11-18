@@ -208,7 +208,7 @@ void main(){
     for (i = 0; i < size; i++) {
         b[i] = malloc(size * sizeof(int));
     }
-    printf("Enter elements of 1st matrix\n");
+    printf("\nEnter elements of 1st matrix\n");
     for (itr = 0; itr < size; itr++) {
         for (itr1 = 0; itr1 < size; itr1++) {
             if (itr >= tempS || itr1 >= tempS)
@@ -219,7 +219,7 @@ void main(){
             }
         }
     }
-    printf("Enter elements of 2nd matrix\n");
+    printf("\nEnter elements of 2nd matrix\n");
     for (itr = 0; itr < size; itr++) {
         for (itr1 = 0; itr1 < size; itr1++) {
             if (itr >= tempS || itr1 >= tempS)
@@ -234,14 +234,14 @@ void main(){
     for (i = 0; i < size; i++) {
         new[i] = malloc(size * sizeof(int));
     }
-    printf("Multiplying matrix 1--------\n");
+    printf("\nMultiplying matrix 1--------\n");
     show_2d_array(a, size);
-    printf("with matrix 2--------\n");
+    printf("\nwith matrix 2--------\n");
     show_2d_array(b, size);
     multiply(a, b, size, size, new);
 
     if (tempS < size)
         size = tempS;
-    printf("Answer:---\n");
+    printf("\nAnswer:---\n");
     show_2d_array(new, size);
 }
