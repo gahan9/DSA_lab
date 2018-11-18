@@ -8,6 +8,9 @@
 #include <string.h>
 #include <stdarg.h>
 
+int max(int a, int b) { return (a > b)? a : b; }
+int min(int a, int b) { return (a < b)? a : b; }
+
 int write_log(const char *format, ...) {
     if(DEBUG) {
         printf("\n[DEBUG_LOG]> ");
